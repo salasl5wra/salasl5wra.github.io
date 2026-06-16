@@ -5,138 +5,199 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal EHS - WRA</title>
     <style>
-        /* Estilos generales */
+        :root {
+            --whr-navy: #003b71; /* Azul marino principal corporativo */
+            --whr-blue: #009cde; /* Azul claro para íconos/botones */
+            --whr-light-bg: #f4f4f4; /* Fondo gris claro de las tarjetas */
+            --whr-text-dark: #333333;
+            --whr-text-gray: #666666;
+        }
+
         body { 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             margin: 0; 
-            background-color: #f4f7f6; 
-            color: #333; 
+            background-color: #ffffff; 
+            color: var(--whr-text-dark); 
         }
         
-        /* Encabezado */
-        header { 
-            background-color: #00563f; /* Verde industrial profesional */
+        /* Barra de navegación superior */
+        .top-nav { 
+            background-color: var(--whr-navy); 
             color: white; 
-            padding: 2rem 1rem; 
-            text-align: center; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 15px 30px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            font-size: 0.9rem;
         }
-        header h1 { margin: 0; font-size: 2.5rem; letter-spacing: 1px; }
-        header p { margin: 10px 0 0 0; font-size: 1.1rem; opacity: 0.9; }
 
-        /* Contenedor principal */
+        .top-nav .logo { 
+            font-weight: bold; 
+            font-size: 1.2rem; 
+            letter-spacing: 1px;
+        }
+        
+        /* Sección principal (Hero) */
+        .hero { 
+            text-align: center; 
+            padding: 60px 20px 40px; 
+            background-color: #ffffff; 
+        }
+        
+        .hero h1 { 
+            color: var(--whr-navy); 
+            font-size: 2.5rem; 
+            font-weight: 300; 
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Contenedor central */
         .container { 
-            max-width: 1200px; 
-            margin: 3rem auto; 
-            padding: 0 1.5rem; 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 0 20px 60px; 
         }
 
-        /* Sistema de Cuadrícula (Grid) para las tarjetas */
-        .grid { 
+        /* Grid de íconos cuadrados (Idéntico a la imagen) */
+        .quick-links { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 2rem; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 15px; 
+            justify-content: center;
         }
 
-        /* Estilo de las Tarjetas */
-        .card { 
-            background: white; 
-            border-radius: 10px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-            padding: 2rem; 
+        /* Estilo de la tarjeta cuadrada */
+        .link-card { 
+            background-color: var(--whr-light-bg); 
+            padding: 30px 15px; 
             text-align: center; 
-            transition: all 0.3s ease; 
             text-decoration: none; 
-            color: inherit; 
-            display: block; 
-            border-top: 4px solid transparent;
-        }
-        .card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1); 
-            border-top: 4px solid #00563f; 
-        }
-        .card h3 { 
-            color: #00563f; 
-            margin-top: 0; 
-            font-size: 1.4rem;
-        }
-        .card p {
-            color: #666;
-            line-height: 1.5;
-            margin-bottom: 0;
-        }
-        .icon { 
-            font-size: 3rem; 
-            margin-bottom: 1rem; 
+            color: var(--whr-text-gray); 
+            transition: background-color 0.2s, transform 0.2s; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
         }
 
-        /* Pie de página */
-        footer { 
-            text-align: center; 
-            padding: 2rem; 
-            margin-top: 2rem; 
-            color: #777; 
-            font-size: 0.9rem; 
+        .link-card:hover { 
+            background-color: #e8e8e8; 
         }
+
+        /* Círculo azul para el ícono */
+        .icon-circle { 
+            background-color: var(--whr-blue); 
+            color: white; 
+            width: 70px; 
+            height: 70px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 32px; 
+            margin-bottom: 15px; 
+        }
+
+        .link-title { 
+            font-size: 0.95rem; 
+            font-weight: 400; 
+            line-height: 1.3;
+            color: var(--whr-text-gray);
+        }
+
+        /* Barra de sección inferior */
+        .section-header { 
+            background-color: var(--whr-navy); 
+            color: white; 
+            padding: 12px 20px; 
+            margin-top: 50px; 
+            font-weight: 500; 
+        }
+
+        .section-content { 
+            border: 1px solid #e0e0e0; 
+            border-top: none;
+            padding: 40px; 
+            text-align: center;
+            background-color: white;
+        }
+
+        .btn-portal {
+            display: inline-block; 
+            background-color: var(--whr-blue); 
+            color: white; 
+            text-decoration: none; 
+            padding: 10px 25px; 
+            border-radius: 4px; 
+            margin-top: 15px;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn-portal:hover {
+            background-color: #0088c2;
+        }
+
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Portal de EHS - WRA</h1>
-        <p>Centro de Gestión de Medio Ambiente, Salud y Seguridad</p>
-    </header>
-
-    <div class="container">
-        <div class="grid">
-            <!-- Tarjeta 1 -->
-            <a href="#" class="card">
-                <div class="icon">📋</div>
-                <h3>Inspecciones</h3>
-                <p>Registro, seguimiento y auditorías de seguridad en planta.</p>
-            </a>
-
-            <!-- Tarjeta 2 -->
-            <a href="#" class="card">
-                <div class="icon">📊</div>
-                <h3>Tablero WCM</h3>
-                <p>Indicadores clave, métricas y estado del pilar de seguridad.</p>
-            </a>
-
-            <!-- Tarjeta 3 -->
-            <a href="#" class="card">
-                <div class="icon">⚠️</div>
-                <h3>Reportes Disciplinarios</h3>
-                <p>Gestión de incidentes, casi accidentes y acciones correctivas.</p>
-            </a>
-
-            <!-- Tarjeta 4 -->
-            <a href="#" class="card">
-                <div class="icon">🚀</div>
-                <h3>Proyectos de EHS</h3>
-                <p>Iniciativas de mejora continua y reducción de riesgos operativos.</p>
-            </a>
-
-            <!-- Tarjeta 5 -->
-            <a href="#" class="card">
-                <div class="icon">📚</div>
-                <h3>Entrenamientos</h3>
-                <p>Materiales didácticos, presentaciones y biblioteca de cursos.</p>
-            </a>
-
-            <!-- Tarjeta 6 -->
-            <a href="#" class="card">
-                <div class="icon">📅</div>
-                <h3>Calendarios</h3>
-                <p>Programación de futuras sesiones de capacitación y eventos.</p>
-            </a>
-        </div>
+    <!-- Barra superior -->
+    <div class="top-nav">
+        <div class="logo">WRA</div>
+        <div>Portal EHS</div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 WRA - Departamento de EHS. Todos los derechos reservados.</p>
-    </footer>
+    <!-- Encabezado -->
+    <div class="hero">
+        <h1>Portal de Medio Ambiente, Salud y Seguridad</h1>
+    </div>
+
+    <div class="container">
+        
+        <!-- Tarjetas tipo portal corporativo -->
+        <div class="quick-links">
+            <a href="#" class="link-card">
+                <div class="icon-circle">📋</div>
+                <div class="link-title">Inspecciones</div>
+            </a>
+
+            <a href="#" class="link-card">
+                <div class="icon-circle">📊</div>
+                <div class="link-title">Tablero WCM</div>
+            </a>
+
+            <a href="#" class="link-card">
+                <div class="icon-circle">⚠️</div>
+                <div class="link-title">Reportes<br>Disciplinarios</div>
+            </a>
+
+            <a href="#" class="link-card">
+                <div class="icon-circle">🚀</div>
+                <div class="link-title">Proyectos<br>de EHS</div>
+            </a>
+
+            <a href="#" class="link-card">
+                <div class="icon-circle">📚</div>
+                <div class="link-title">Entrenamientos</div>
+            </a>
+
+            <a href="#" class="link-card">
+                <div class="icon-circle">📅</div>
+                <div class="link-title">Calendarios</div>
+            </a>
+        </div>
+
+        <!-- Panel Inferior -->
+        <div class="section-header">
+            Avisos y Comunicados EHS
+        </div>
+        <div class="section-content">
+            <p style="color: #666; margin-top: 0;">Centro de recursos e información general de seguridad en planta.</p>
+            <a href="#" class="btn-portal">Ir a Whirlpool 360</a>
+        </div>
+
+    </div>
 
 </body>
 </html>
