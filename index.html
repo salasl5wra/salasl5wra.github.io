@@ -1,637 +1,142 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <base target="_top">
-  <meta charset="UTF-8">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css" rel="stylesheet">
-  <style>
-    :root {
-      --whr-dark:  #003b71;
-      --whr-blue:  #1ba0d7;
-      --whr-red:   #c0392b;
-      --whr-bg:    #f0f2f5;
-    }
-    * { box-sizing: border-box; }
-    body {
-      background: var(--whr-bg);
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      font-size: 13px;
-      padding: 14px;
-      color: #2d3748;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal EHS - WRA</title>
+    <style>
+        /* Estilos generales */
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            background-color: #f4f7f6; 
+            color: #333; 
+        }
+        
+        /* Encabezado */
+        header { 
+            background-color: #00563f; /* Verde industrial profesional */
+            color: white; 
+            padding: 2rem 1rem; 
+            text-align: center; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 { margin: 0; font-size: 2.5rem; letter-spacing: 1px; }
+        header p { margin: 10px 0 0 0; font-size: 1.1rem; opacity: 0.9; }
 
-    /* Header */
-    .app-header {
-      display: flex; align-items: center; gap: 10px;
-      background: var(--whr-dark); color: white;
-      border-radius: 8px; padding: 10px 16px; margin-bottom: 14px;
-    }
-    .app-header .title   { font-size: 14px; font-weight: 700; letter-spacing: .4px; }
-    .app-header .subtitle { font-size: 11px; opacity: .75; }
+        /* Contenedor principal */
+        .container { 
+            max-width: 1200px; 
+            margin: 3rem auto; 
+            padding: 0 1.5rem; 
+        }
 
-    /* Cards */
-    .section-card {
-      background: white; border-radius: 8px; padding: 16px;
-      margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.08);
-      border-left: 4px solid var(--whr-dark);
-    }
-    .section-card.danger { border-left-color: var(--whr-red); }
-    .section-label {
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .6px; color: var(--whr-dark);
-      margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
-    }
-    .section-card.danger .section-label { color: var(--whr-red); }
-    label.form-label { font-size: 11px; font-weight: 600; color: #4a5568; margin-bottom: 3px; }
-    .form-control, .form-select {
-      font-size: 12px; border-color: #d1d5db; border-radius: 6px;
-    }
-    .form-control:focus, .form-select:focus {
-      border-color: var(--whr-blue);
-      box-shadow: 0 0 0 3px rgba(27,160,215,.15);
-    }
-    .form-control.bg-light { background-color: #f8fafc !important; }
+        /* Sistema de Cuadrícula (Grid) para las tarjetas */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 2rem; 
+        }
 
-    /* Botón buscar */
-    .btn-search {
-      background: var(--whr-dark); border-color: var(--whr-dark);
-      color: white; font-size: 12px;
-    }
-    .btn-search:hover { background: #002a54; color: white; }
+        /* Estilo de las Tarjetas */
+        .card { 
+            background: white; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+            padding: 2rem; 
+            text-align: center; 
+            transition: all 0.3s ease; 
+            text-decoration: none; 
+            color: inherit; 
+            display: block; 
+            border-top: 4px solid transparent;
+        }
+        .card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1); 
+            border-top: 4px solid #00563f; 
+        }
+        .card h3 { 
+            color: #00563f; 
+            margin-top: 0; 
+            font-size: 1.4rem;
+        }
+        .card p {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+        .icon { 
+            font-size: 3rem; 
+            margin-bottom: 1rem; 
+        }
 
-    /* Panel historial */
-    .historial-panel {
-      display: none; margin-top: 12px;
-      background: #fffbeb; border: 1px solid #fcd34d;
-      border-radius: 6px; padding: 10px;
-    }
-    .historial-header {
-      font-size: 11px; font-weight: 700; color: #92400e;
-      margin-bottom: 8px; display: flex; align-items: center; gap: 5px;
-    }
-    .table-historial { font-size: 10.5px; margin-bottom: 0; }
-    .table-historial thead th {
-      background: #fef3c7; color: #78350f;
-      font-weight: 700; border-color: #fcd34d;
-    }
-    .table-historial td { border-color: #fde68a; vertical-align: middle; }
-
-    /* Badges estatus */
-    .badge-abierto { background:#dc2626; font-size:9px; }
-    .badge-cerrado { background:#16a34a; font-size:9px; }
-    .badge-pending { background:#d97706; font-size:9px; }
-
-    /* Panel RH cierre — inline en la fila */
-    .rh-close-panel {
-      background: #eff6ff;
-      border: 1px solid #93c5fd;
-      border-radius: 6px;
-      padding: 10px 12px;
-      margin-top: 8px;
-      display: none;
-      animation: fadeIn .2s ease;
-    }
-    .rh-close-panel .rh-title {
-      font-size: 11px; font-weight: 700;
-      color: #1e40af; margin-bottom: 8px;
-      display: flex; align-items: center; gap: 5px;
-    }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
-
-    /* Botón cerrar caso */
-    .btn-close-case {
-      font-size: 11px; padding: 3px 10px;
-      border-radius: 20px;
-      background: white; border: 1px solid #93c5fd;
-      color: #1e40af; cursor: pointer;
-      transition: all .2s;
-      white-space: nowrap;
-    }
-    .btn-close-case:hover { background:#dbeafe; }
-    .btn-close-case:disabled { opacity:.5; cursor:not-allowed; }
-    .btn-close-case.rh-active {
-      background: #1d4ed8; color: white;
-      border-color: #1d4ed8;
-    }
-    .btn-confirm-close {
-      font-size: 11px; padding: 4px 14px;
-      background: #15803d; border: none;
-      color: white; border-radius: 20px; cursor: pointer;
-      transition: background .2s;
-    }
-    .btn-confirm-close:hover:not(:disabled) { background: #166534; }
-    .btn-confirm-close:disabled { opacity:.5; cursor:not-allowed; }
-
-    /* Toast */
-    .toast-wrapper { position:fixed; top:16px; right:16px; z-index:9999; min-width:270px; }
-    .toast-box {
-      border-radius:8px; padding:12px 16px; color:white;
-      font-size:12px; font-weight:600;
-      box-shadow:0 4px 16px rgba(0,0,0,.18);
-      display:flex; align-items:flex-start; gap:10px;
-      margin-bottom: 8px;
-      animation:slideIn .3s ease;
-    }
-    .toast-box.success { background:#15803d; }
-    .toast-box.error   { background:#dc2626; }
-    @keyframes slideIn { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
-
-    /* Spinner overlay */
-    .spinner-overlay {
-      display:none; position:fixed; inset:0;
-      background:rgba(255,255,255,.65); backdrop-filter:blur(2px);
-      z-index:9998; align-items:center; justify-content:center;
-      flex-direction:column; gap:10px;
-    }
-    .spinner-overlay.active { display:flex; }
-    .spinner-overlay .msg { font-size:12px; font-weight:600; color:var(--whr-dark); }
-
-    /* Footer buttons */
-    .btn-register {
-      background:var(--whr-red); border-color:var(--whr-red);
-      color:white; font-weight:600; font-size:12px; padding:7px 22px;
-    }
-    .btn-register:hover:not(:disabled) { background:#a93226; color:white; }
-    .btn-register:disabled { opacity:.6; cursor:not-allowed; }
-  </style>
+        /* Pie de página */
+        footer { 
+            text-align: center; 
+            padding: 2rem; 
+            margin-top: 2rem; 
+            color: #777; 
+            font-size: 0.9rem; 
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Spinner -->
-  <div class="spinner-overlay" id="spinnerOverlay">
-    <div class="spinner-border text-primary" style="width:2rem;height:2rem;"></div>
-    <div class="msg" id="spinnerMsg">Procesando...</div>
-  </div>
+    <header>
+        <h1>Portal de EHS - WRA</h1>
+        <p>Centro de Gestión de Medio Ambiente, Salud y Seguridad</p>
+    </header>
 
-  <!-- Toasts -->
-  <div class="toast-wrapper" id="toastWrapper"></div>
+    <div class="container">
+        <div class="grid">
+            <!-- Tarjeta 1 -->
+            <a href="#" class="card">
+                <div class="icon">📋</div>
+                <h3>Inspecciones</h3>
+                <p>Registro, seguimiento y auditorías de seguridad en planta.</p>
+            </a>
 
-  <!-- Header -->
-  <div class="app-header">
-    <i class="bi bi-shield-exclamation" style="font-size:24px;"></i>
-    <div>
-      <div class="title">Sistema EHS — Control Disciplinario</div>
-      <div class="subtitle">Registro de Incumplimiento a Matriz de Seguridad</div>
-    </div>
-  </div>
+            <!-- Tarjeta 2 -->
+            <a href="#" class="card">
+                <div class="icon">📊</div>
+                <h3>Tablero WCM</h3>
+                <p>Indicadores clave, métricas y estado del pilar de seguridad.</p>
+            </a>
 
-  <!-- Sección 1: Empleado -->
-  <div class="section-card">
-    <div class="section-label"><i class="bi bi-person-badge"></i> Identificación del Personal</div>
-    <div class="row g-2">
-      <div class="col-5">
-        <label class="form-label">Nómina / Badge *</label>
-        <div class="input-group input-group-sm">
-          <input type="text" id="idEmpleado" class="form-control" placeholder="Ej: 10245"
-                 onkeydown="if(event.key==='Enter'){buscarId();}">
-          <button class="btn btn-search" type="button" id="btnBuscar" onclick="buscarId()">
-            <i class="bi bi-search"></i> Buscar
-          </button>
+            <!-- Tarjeta 3 -->
+            <a href="#" class="card">
+                <div class="icon">⚠️</div>
+                <h3>Reportes Disciplinarios</h3>
+                <p>Gestión de incidentes, casi accidentes y acciones correctivas.</p>
+            </a>
+
+            <!-- Tarjeta 4 -->
+            <a href="#" class="card">
+                <div class="icon">🚀</div>
+                <h3>Proyectos de EHS</h3>
+                <p>Iniciativas de mejora continua y reducción de riesgos operativos.</p>
+            </a>
+
+            <!-- Tarjeta 5 -->
+            <a href="#" class="card">
+                <div class="icon">📚</div>
+                <h3>Entrenamientos</h3>
+                <p>Materiales didácticos, presentaciones y biblioteca de cursos.</p>
+            </a>
+
+            <!-- Tarjeta 6 -->
+            <a href="#" class="card">
+                <div class="icon">📅</div>
+                <h3>Calendarios</h3>
+                <p>Programación de futuras sesiones de capacitación y eventos.</p>
+            </a>
         </div>
-      </div>
-      <div class="col-7">
-        <label class="form-label">Nombre Completo</label>
-        <input type="text" id="nombreEmpleado" class="form-control form-control-sm bg-light" readonly placeholder="Se autocompleta...">
-      </div>
-    </div>
-    <div class="row g-2 mt-1">
-      <div class="col-12">
-        <label class="form-label">Área / Departamento</label>
-        <input type="text" id="areaEmpleado" class="form-control form-control-sm bg-light" readonly>
-      </div>
     </div>
 
-    <!-- Historial -->
-    <div class="historial-panel" id="historialPanel">
-      <div class="historial-header">
-        <i class="bi bi-clock-history"></i> Antecedentes del empleado
-        <span id="contadorHistorial" class="badge bg-warning text-dark ms-1" style="font-size:9px;"></span>
-      </div>
-      <div class="table-responsive">
-        <table class="table table-sm table-bordered table-historial">
-          <thead>
-            <tr>
-              <th>Folio</th>
-              <th>Fecha</th>
-              <th>Falta cometida</th>
-              <th>Abordaje</th>
-              <th>Estatus</th>
-              <th id="thAccionRH" style="display:none;">Acción RH</th>
-            </tr>
-          </thead>
-          <tbody id="historialBody"></tbody>
-        </table>
-      </div>
+    <footer>
+        <p>&copy; 2026 WRA - Departamento de EHS. Todos los derechos reservados.</p>
+    </footer>
 
-      <!-- Panel selector RH (aparece al hacer clic en "Cerrar caso") -->
-      <div class="rh-close-panel" id="rhClosePanel">
-        <div class="rh-title"><i class="bi bi-person-lock"></i> Autorización RH — Cierre de Caso</div>
-        <div class="row g-2 align-items-end">
-          <div class="col-7">
-            <label class="form-label" style="font-size:11px;">Responsable RH que autoriza el cierre</label>
-            <select id="selectRH" class="form-select form-select-sm">
-              <option value="">-- Seleccione su nombre --</option>
-            </select>
-          </div>
-          <div class="col-5 d-flex gap-2">
-            <button class="btn-confirm-close" id="btnConfirmClose" onclick="confirmarCierre()">
-              <i class="bi bi-check-lg"></i> Confirmar cierre
-            </button>
-            <button class="btn btn-outline-secondary btn-sm" style="font-size:11px;border-radius:20px;"
-                    onclick="cancelarCierre()">Cancelar</button>
-          </div>
-        </div>
-        <div id="folioSeleccionado" style="font-size:10px;color:#64748b;margin-top:6px;"></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Sección 2: Incumplimiento -->
-  <div class="section-card danger">
-    <div class="section-label"><i class="bi bi-exclamation-triangle-fill"></i> Detalles del Incumplimiento y Abordaje</div>
-
-    <div class="mb-2">
-      <label class="form-label">Falta Cometida (Matriz Disciplinaria) *</label>
-      <select id="selectViolacion" class="form-select form-select-sm">
-        <option value="">-- Seleccione la falta del catálogo --</option>
-      </select>
-      <div id="catalogoError" class="text-danger mt-1" style="font-size:11px;display:none;"></div>
-    </div>
-
-    <div class="mb-2">
-      <label class="form-label">Tipo de Abordaje / Acción Inicial *</label>
-      <select id="tipoAbordaje" class="form-select form-select-sm" onchange="toggleCamposRH()">
-        <option value="">-- Seleccione el nivel de severidad --</option>
-        <option value="Llamada de Atención Verbal (Coaching)">🟡 Verbal (Coaching) — Cierra Preventivo</option>
-        <option value="Escalamiento a RRHH (Reporte Disciplinario)">🔴 Escalamiento a RRHH — Requiere Sanción (30 días)</option>
-      </select>
-    </div>
-
-    <div id="camposRH" style="display:none;">
-      <div class="row g-2 mb-2">
-        <div class="col-6">
-          <label class="form-label">Número de Caso (HR-)</label>
-          <input type="text" id="hrInput" class="form-control form-control-sm" placeholder="Ej. HR-12345">
-        </div>
-        <div class="col-6">
-          <label class="form-label">Fecha(s) de Suspensión</label>
-          <input type="text" id="diasSuspension" class="form-control form-control-sm" placeholder="Ej. 12, 13 y 14 de Junio">
-        </div>
-      </div>
-    </div>
-
-    <div class="mb-2">
-      <label class="form-label">Descripción Detallada de los Hechos *</label>
-      <textarea id="detalles" class="form-control form-control-sm" rows="3"
-                placeholder="Describa la evidencia o situación detectada..."></textarea>
-    </div>
-
-    <div class="mb-1">
-      <label class="form-label">Reportado Por (Auditor / Supervisor) *</label>
-      <input type="text" id="reportadoPor" class="form-control form-control-sm" placeholder="Nombre de quien reporta">
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <div class="d-flex justify-content-end gap-2 pb-1">
-    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="tryClose()">
-      <i class="bi bi-x-lg"></i> Cerrar
-    </button>
-    <button type="button" id="btnGuardar" class="btn btn-register" onclick="enviarFormulario()">
-      <i class="bi bi-floppy"></i> Registrar Incidente
-    </button>
-  </div>
-
-<script>
-  // ─── Estado global ───────────────────────────────────────────
-  var usuariosRH       = [];
-  var folioParaCerrar  = null;  // folio activo en el panel RH
-  var botonesClose     = {};    // referencia a botones por folio
-
-  // ─── Utilidades UI ───────────────────────────────────────────
-  function showSpinner(msg) {
-    document.getElementById('spinnerMsg').textContent = msg || 'Procesando...';
-    document.getElementById('spinnerOverlay').classList.add('active');
-  }
-  function hideSpinner() {
-    document.getElementById('spinnerOverlay').classList.remove('active');
-  }
-  function showToast(type, title, body) {
-    var wrapper = document.getElementById('toastWrapper');
-    var icon = type === 'success' ? '✅' : '❌';
-    var div = document.createElement('div');
-    div.className = 'toast-box ' + type;
-    div.innerHTML = '<span style="font-size:18px;">' + icon + '</span>'
-      + '<div><div style="font-size:13px;margin-bottom:2px;">' + title + '</div>'
-      + '<div style="font-weight:400;opacity:.9;">' + body + '</div></div>';
-    wrapper.appendChild(div);
-    setTimeout(function() { div.style.opacity='0'; div.style.transition='opacity .4s'; }, 3500);
-    setTimeout(function() { if(div.parentNode) wrapper.removeChild(div); }, 4000);
-  }
-  function tryClose() {
-    try { google.script.host.close(); } catch(e) {}
-  }
-  function toggleCamposRH() {
-    var val = document.getElementById('tipoAbordaje').value;
-    document.getElementById('camposRH').style.display = val.includes('Escalamiento') ? 'block' : 'none';
-  }
-
-  // ─── Carga inicial ───────────────────────────────────────────
-  window.onload = function() {
-    showSpinner('Cargando catálogo...');
-    // Cargar violaciones
-    google.script.run
-      .withSuccessHandler(function(resp) {
-        hideSpinner();
-        if (!resp.ok) {
-          document.getElementById('catalogoError').textContent = '⚠️ ' + resp.error;
-          document.getElementById('catalogoError').style.display = 'block';
-          return;
-        }
-        cargarViolaciones(resp.lista);
-      })
-      .withFailureHandler(function(err) {
-        hideSpinner();
-        showToast('error', 'Error al cargar catálogo', err.message || String(err));
-      })
-      .obtenerViolaciones();
-
-    // Cargar usuarios RH en segundo plano
-    google.script.run
-      .withSuccessHandler(function(resp) {
-        if (resp.ok) {
-          usuariosRH = resp.lista;
-          var sel = document.getElementById('selectRH');
-          usuariosRH.forEach(function(nombre) {
-            var opt = document.createElement('option');
-            opt.value = nombre; opt.text = nombre;
-            sel.appendChild(opt);
-          });
-        }
-      })
-      .withFailureHandler(function() {})
-      .obtenerUsuariosRH();
-  };
-
-  function cargarViolaciones(lista) {
-    var select = document.getElementById('selectViolacion');
-    lista.forEach(function(item) {
-      var opt = document.createElement('option');
-      opt.value = item.codigo + ' - ' + item.descripcion;
-      opt.text  = '[' + item.gravedad + '] ' + item.codigo + ' — ' + item.descripcion;
-      select.appendChild(opt);
-    });
-  }
-
-  // ─── Buscar empleado ─────────────────────────────────────────
-  function buscarId() {
-    var id = document.getElementById('idEmpleado').value.trim();
-    if (!id) { showToast('error', 'Campo vacío', 'Ingresa una Nómina o Badge.'); return; }
-
-    limpiarDatosEmpleado();
-    showSpinner('Consultando expediente...');
-    setBuscarDisabled(true);
-
-    google.script.run
-      .withSuccessHandler(function(resultado) {
-        hideSpinner();
-        setBuscarDisabled(false);
-        if (resultado.error) { showToast('error', 'Error', resultado.error); return; }
-        if (!resultado.encontrado) { showToast('error', 'No encontrado', 'Empleado no localizado en HC Maestro.'); return; }
-
-        document.getElementById('nombreEmpleado').value = resultado.nombre;
-        document.getElementById('areaEmpleado').value   = resultado.area;
-
-        if (resultado.historial && resultado.historial.length > 0) {
-          renderHistorial(resultado.historial);
-        }
-      })
-      .withFailureHandler(function(err) {
-        hideSpinner();
-        setBuscarDisabled(false);
-        showToast('error', 'Error del servidor', err.message || String(err));
-      })
-      .buscarEmpleado(id);
-  }
-
-  function setBuscarDisabled(state) {
-    var btn = document.getElementById('btnBuscar');
-    btn.disabled = state;
-    btn.innerHTML = state
-      ? '<span class="spinner-border spinner-border-sm"></span>'
-      : '<i class="bi bi-search"></i> Buscar';
-  }
-
-  // ─── Renderizar historial con botones de cierre ──────────────
-  function renderHistorial(historial) {
-    var tbody = document.getElementById('historialBody');
-    var thAccion = document.getElementById('thAccionRH');
-    tbody.innerHTML = '';
-    botonesClose = {};
-
-    // Mostrar columna de acción solo si hay casos abiertos
-    var hayAbiertos = historial.some(function(item) {
-      return item.estatus && item.estatus.toString().includes('Abierto');
-    });
-    thAccion.style.display = hayAbiertos ? '' : 'none';
-
-    document.getElementById('contadorHistorial').textContent = historial.length + ' registro(s)';
-
-    historial.forEach(function(item) {
-      var estatus  = item.estatus ? item.estatus.toString() : '';
-      var estaAbierto = estatus.includes('Abierto');
-
-      var badgeCls = estaAbierto  ? 'badge-abierto'
-                   : estatus.includes('Cerrado') ? 'badge-cerrado'
-                   : 'badge-pending';
-
-      var tr = document.createElement('tr');
-      tr.id = 'row-' + item.folio;
-
-      // Celda de acción RH
-      var tdAccion = '';
-      if (hayAbiertos) {
-        if (estaAbierto) {
-          tdAccion = '<td><button class="btn-close-case" id="btn-close-' + item.folio + '"'
-            + ' onclick="iniciarCierre(\'' + item.folio + '\')">🔒 Cerrar caso</button></td>';
-        } else {
-          tdAccion = '<td style="text-align:center;color:#9ca3af;font-size:10px;">—</td>';
-        }
-      }
-
-      tr.innerHTML =
-        '<td><strong>' + item.folio + '</strong></td>' +
-        '<td style="white-space:nowrap;">' + item.fecha + '</td>' +
-        '<td title="' + item.falta + '" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + item.falta + '</td>' +
-        '<td style="white-space:nowrap;">' + item.abordaje + '</td>' +
-        '<td><span class="badge ' + badgeCls + '" id="badge-' + item.folio + '">' + estatus + '</span></td>' +
-        tdAccion;
-
-      tbody.appendChild(tr);
-    });
-
-    document.getElementById('historialPanel').style.display = 'block';
-  }
-
-  // ─── Flujo de cierre de caso ─────────────────────────────────
-
-  function iniciarCierre(folio) {
-    // Si ya hay un panel abierto para otro folio, cancelar primero
-    if (folioParaCerrar && folioParaCerrar !== folio) {
-      cancelarCierre();
-    }
-
-    folioParaCerrar = folio;
-    document.getElementById('selectRH').value = '';
-
-    // Mostrar panel debajo de la tabla
-    var panel = document.getElementById('rhClosePanel');
-    panel.style.display = 'block';
-    document.getElementById('folioSeleccionado').textContent =
-      'Cerrando folio #' + folio + ' — la fecha de cierre se registrará automáticamente.';
-
-    // Resaltar botón activo
-    var btn = document.getElementById('btn-close-' + folio);
-    if (btn) {
-      btn.classList.add('rh-active');
-      btn.textContent = '🔒 Cerrando...';
-    }
-
-    // Scroll suave al panel
-    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  function cancelarCierre() {
-    if (folioParaCerrar) {
-      var btn = document.getElementById('btn-close-' + folioParaCerrar);
-      if (btn) {
-        btn.classList.remove('rh-active');
-        btn.innerHTML = '🔒 Cerrar caso';
-        btn.disabled = false;
-      }
-    }
-    document.getElementById('rhClosePanel').style.display = 'none';
-    document.getElementById('selectRH').value = '';
-    folioParaCerrar = null;
-  }
-
-  function confirmarCierre() {
-    if (!folioParaCerrar) return;
-
-    var responsable = document.getElementById('selectRH').value;
-    if (!responsable) {
-      showToast('error', 'Selección requerida', 'Elige el nombre del responsable RH antes de confirmar.');
-      return;
-    }
-
-    var btnConfirm = document.getElementById('btnConfirmClose');
-    btnConfirm.disabled = true;
-    btnConfirm.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Guardando...';
-
-    var folioActual = folioParaCerrar;
-
-    google.script.run
-      .withSuccessHandler(function(resp) {
-        btnConfirm.disabled = false;
-        btnConfirm.innerHTML = '<i class="bi bi-check-lg"></i> Confirmar cierre';
-
-        if (!resp.ok) {
-          showToast('error', 'No se pudo cerrar', resp.mensaje);
-          cancelarCierre();
-          return;
-        }
-
-        // ✅ Actualizar UI sin recargar
-        var badge = document.getElementById('badge-' + folioActual);
-        if (badge) {
-          badge.className = 'badge badge-cerrado';
-          badge.textContent = 'Cerrado';
-        }
-        var btnCerrar = document.getElementById('btn-close-' + folioActual);
-        if (btnCerrar && btnCerrar.parentNode) {
-          btnCerrar.parentNode.innerHTML = '<span style="font-size:10px;color:#16a34a;">✓ Cerrado por ' + resp.responsable + '</span>';
-        }
-
-        document.getElementById('rhClosePanel').style.display = 'none';
-        folioParaCerrar = null;
-
-        showToast('success',
-          'Caso #' + folioActual + ' cerrado',
-          'Responsable: ' + resp.responsable + ' · ' + resp.fechaCierre
-        );
-      })
-      .withFailureHandler(function(err) {
-        btnConfirm.disabled = false;
-        btnConfirm.innerHTML = '<i class="bi bi-check-lg"></i> Confirmar cierre';
-        showToast('error', 'Error del servidor', err.message || String(err));
-        cancelarCierre();
-      })
-      .cerrarCaso(folioActual, responsable);
-  }
-
-  function limpiarDatosEmpleado() {
-    document.getElementById('nombreEmpleado').value = '';
-    document.getElementById('areaEmpleado').value   = '';
-    document.getElementById('historialBody').innerHTML = '';
-    document.getElementById('historialPanel').style.display = 'none';
-    document.getElementById('rhClosePanel').style.display = 'none';
-    document.getElementById('thAccionRH').style.display = 'none';
-    folioParaCerrar = null;
-  }
-
-  // ─── Guardar reporte ─────────────────────────────────────────
-  function enviarFormulario() {
-    var campos = [
-      { id: 'idEmpleado',      label: 'Nómina/Badge' },
-      { id: 'nombreEmpleado',  label: 'Nombre del empleado (busca el ID primero)' },
-      { id: 'selectViolacion', label: 'Falta cometida' },
-      { id: 'tipoAbordaje',    label: 'Tipo de abordaje' },
-      { id: 'detalles',        label: 'Descripción de los hechos' },
-      { id: 'reportadoPor',    label: 'Reportado por' }
-    ];
-    for (var i = 0; i < campos.length; i++) {
-      var el = document.getElementById(campos[i].id);
-      if (!el.value.trim()) {
-        showToast('error', 'Campo requerido', 'Completa: ' + campos[i].label);
-        el.focus(); return;
-      }
-    }
-
-    var datos = {
-      idEmpleado    : document.getElementById('idEmpleado').value.trim(),
-      nombre        : document.getElementById('nombreEmpleado').value.trim(),
-      area          : document.getElementById('areaEmpleado').value.trim(),
-      violacion     : document.getElementById('selectViolacion').value,
-      tipoAbordaje  : document.getElementById('tipoAbordaje').value,
-      numeroHR      : document.getElementById('hrInput').value.trim(),
-      diasSuspension: document.getElementById('diasSuspension').value.trim(),
-      detalles      : document.getElementById('detalles').value.trim(),
-      reportadoPor  : document.getElementById('reportadoPor').value.trim()
-    };
-
-    showSpinner('Guardando registro...');
-    document.getElementById('btnGuardar').disabled = true;
-
-    google.script.run
-      .withSuccessHandler(function(resp) {
-        hideSpinner();
-        if (!resp.ok) {
-          document.getElementById('btnGuardar').disabled = false;
-          showToast('error', 'No se pudo guardar', resp.mensaje);
-          return;
-        }
-        showToast('success', 'Registro exitoso — Folio #' + resp.folio, resp.tipo + ' · ' + resp.estatus);
-        setTimeout(function() { tryClose(); }, 2500);
-      })
-      .withFailureHandler(function(err) {
-        hideSpinner();
-        document.getElementById('btnGuardar').disabled = false;
-        showToast('error', 'Error del servidor', err.message || String(err));
-      })
-      .guardarReporte(datos);
-  }
-</script>
 </body>
 </html>
