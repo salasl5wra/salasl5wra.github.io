@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal y Proveedores — Portal EHS · WRA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&family=Roboto+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-deep: #00264d;
+    --navy: #003b71;
+    --blue: #009cde;
+    --blue-dark: #0078ad;
+    --ink: #1a1f29;
+    --gray-700: #4a5160;
+    --gray-400: #8891a0;
+    --gray-200: #e2e6eb;
+    --gray-100: #f1f3f6;
+    --paper: #fbfbfc;
+    --safe-green: #2f8f5b;
+    --amber: #b8860b;
+    --red: #c0392b;
+
+    --font-display: 'Archivo', sans-serif;
+    --font-body: 'Source Sans 3', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+
+  .demo-banner {
+    background: #fff7e6;
+    border-bottom: 1px solid #f0d999;
+    color: #6b4e00;
+    font-size: 0.82rem;
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .demo-banner svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .demo-banner strong { font-weight: 700; }
+
+  .utility-bar {
+    background: var(--navy-deep);
+    color: #c9d6e6;
+    font-size: 0.78rem;
+    padding: 7px 40px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 24px;
+    letter-spacing: 0.2px;
+  }
+  .utility-bar a { text-decoration: none; color: #c9d6e6; opacity: 0.9; transition: opacity 0.15s; }
+  .utility-bar a:hover { opacity: 1; color: #ffffff; }
+  .utility-bar .divider { opacity: 0.3; }
+
+  .main-nav {
+    background: var(--navy);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    border-bottom: 3px solid var(--blue);
+  }
+
+  .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+
+  .brand-mark {
+    width: 38px; height: 38px;
+    border: 2px solid var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800;
+    color: #ffffff; font-size: 0.95rem; letter-spacing: 0.5px;
+  }
+
+  .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-text .org { font-family: var(--font-display); font-weight: 700; color: #ffffff; font-size: 1.05rem; letter-spacing: 0.5px; }
+  .brand-text .division { font-size: 0.7rem; color: #9fc4e6; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600; }
+
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    text-decoration: none; color: #dbe7f3; font-size: 0.88rem; font-weight: 500;
+    letter-spacing: 0.2px; position: relative; padding: 8px 0; transition: color 0.15s;
+  }
+  .nav-links a:hover { color: #ffffff; }
+  .nav-links a.active { color: #ffffff; }
+  .nav-links a.active::after {
+    content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 2px; background: var(--blue);
+  }
+
+  .page-header {
+    background: linear-gradient(165deg, var(--navy-deep) 0%, var(--navy) 100%);
+    color: #ffffff;
+    padding: 40px 40px 34px;
+  }
+
+  .breadcrumb {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.5px;
+    color: #8fb8da;
+    margin-bottom: 14px;
+  }
+  .breadcrumb a { color: #8fb8da; text-decoration: none; }
+  .breadcrumb a:hover { color: #ffffff; }
+
+  .page-header-row {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 30px;
+  }
+
+  .page-header h1 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .page-header p { color: #bcd2e6; font-size: 0.95rem; margin: 0; max-width: 600px; }
+
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+
+  .btn {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 12px 24px;
+    border-radius: 2px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary { background: var(--blue); color: #ffffff; border: 1px solid var(--blue); }
+  .btn-primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
+
+  /* ===== Mode tabs (Empresas / Empleados) ===== */
+  .mode-tabs {
+    display: flex;
+    margin-top: -1px;
+    transform: translateY(-1px);
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .mode-tab {
+    padding: 18px 28px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--gray-400);
+    background: #ffffff;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .mode-tab.active { color: var(--navy); border-bottom-color: var(--blue); }
+  .mode-tab:hover:not(.active) { color: var(--navy); }
+  .mode-tab .count {
+    font-family: var(--font-mono); font-size: 0.74rem; color: var(--gray-400);
+    background: var(--gray-100); padding: 2px 7px; border-radius: 10px; margin-left: 8px;
+  }
+
+  .section { padding: 36px 0 70px; }
+
+  .summary-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--gray-200);
+    border: 1px solid var(--gray-200);
+    margin-bottom: 36px;
+  }
+
+  .summary-card { background: #ffffff; padding: 22px 24px; position: relative; }
+  .summary-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; }
+  .summary-card.tone-green::before { background: var(--safe-green); }
+  .summary-card.tone-amber::before { background: var(--amber); }
+  .summary-card.tone-red::before { background: var(--red); }
+  .summary-card.tone-navy::before { background: var(--navy); }
+
+  .summary-label {
+    font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--gray-400); margin-bottom: 10px;
+  }
+  .summary-value { font-family: var(--font-mono); font-size: 2.1rem; font-weight: 600; color: var(--ink); line-height: 1; }
+  .summary-sub { font-size: 0.78rem; color: var(--gray-400); margin-top: 6px; }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 26px;
+  }
+  .section-head h2 {
+    font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--navy); margin: 0;
+  }
+  .section-tag { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-400); }
+
+  .filter-bar { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+  .filter-chip {
+    font-family: var(--font-body); font-size: 0.82rem; font-weight: 600; padding: 8px 18px;
+    border: 1px solid var(--gray-200); background: #ffffff; color: var(--gray-700);
+    cursor: pointer; transition: all 0.15s; border-radius: 2px;
+  }
+  .filter-chip.active { background: var(--navy); color: #ffffff; border-color: var(--navy); }
+  .filter-chip:hover:not(.active) { border-color: var(--blue); color: var(--navy); }
+
+  .filter-search {
+    margin-left: auto; display: flex; align-items: center; border: 1px solid var(--gray-200);
+    padding: 0 14px; background: #ffffff; min-width: 240px;
+  }
+  .filter-search svg { width: 16px; height: 16px; color: var(--gray-400); flex-shrink: 0; }
+  .filter-search input { border: none; outline: none; padding: 9px 10px; font-family: var(--font-body); font-size: 0.85rem; width: 100%; color: var(--ink); }
+
+  /* ===== Company cards (expandable) ===== */
+  .company-list { display: flex; flex-direction: column; gap: 14px; }
+
+  .company-card { border: 1px solid var(--gray-200); background: #ffffff; }
+  .company-card.blocked { border-left: 4px solid var(--red); }
+  .company-card.ok { border-left: 4px solid var(--safe-green); }
+
+  .company-head {
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    gap: 20px;
+  }
+
+  .company-info { display: flex; align-items: center; gap: 16px; flex: 1; }
+
+  .company-icon {
+    width: 44px; height: 44px; border-radius: 8px; background: var(--gray-100);
+    display: flex; align-items: center; justify-content: center; color: var(--navy); flex-shrink: 0;
+  }
+  .company-icon svg { width: 22px; height: 22px; }
+
+  .company-name { font-size: 0.98rem; font-weight: 700; color: var(--ink); }
+  .company-meta { font-size: 0.78rem; color: var(--gray-400); margin-top: 2px; }
+
+  .company-docs { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .doc-pill {
+    font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.3px;
+    padding: 5px 10px; display: inline-flex; align-items: center; gap: 5px; text-transform: uppercase;
+  }
+  .doc-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .doc-pill.ok { background: rgba(47,143,91,0.1); color: var(--safe-green); }
+  .doc-pill.ok .dot { background: var(--safe-green); }
+  .doc-pill.fail { background: rgba(192,57,43,0.1); color: var(--red); }
+  .doc-pill.fail .dot { background: var(--red); }
+  .doc-pill.warn { background: rgba(184,134,11,0.1); color: var(--amber); }
+  .doc-pill.warn .dot { background: var(--amber); }
+
+  .chevron { color: var(--gray-400); transition: transform 0.2s; flex-shrink: 0; }
+  .chevron svg { width: 18px; height: 18px; }
+  .company-card.expanded .chevron { transform: rotate(180deg); }
+
+  .company-body { display: none; border-top: 1px solid var(--gray-200); padding: 22px 24px; background: var(--gray-100); }
+  .company-card.expanded .company-body { display: block; }
+
+  .doc-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .doc-detail-card { background: #ffffff; border: 1px solid var(--gray-200); padding: 14px 16px; }
+  .doc-detail-label { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 6px; }
+  .doc-detail-value { font-size: 0.84rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .doc-detail-exp { font-family: var(--font-mono); font-size: 0.72rem; }
+  .doc-detail-exp.ok { color: var(--safe-green); }
+  .doc-detail-exp.fail { color: var(--red); }
+  .doc-detail-exp.warn { color: var(--amber); }
+
+  .workers-mini-table { width: 100%; border-collapse: collapse; background: #ffffff; }
+  .workers-mini-table th {
+    text-align: left; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.5px;
+    text-transform: uppercase; color: var(--gray-400); padding: 10px 14px; border-bottom: 1px solid var(--gray-200);
+  }
+  .workers-mini-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-200); font-size: 0.84rem; }
+  .workers-mini-table tr:last-child td { border-bottom: none; }
+
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.72rem;
+    font-weight: 600; letter-spacing: 0.3px; padding: 4px 10px; text-transform: uppercase;
+  }
+  .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .status-ok { background: rgba(47,143,91,0.1); color: var(--safe-green); }
+  .status-ok .dot { background: var(--safe-green); }
+  .status-fail { background: rgba(192,57,43,0.1); color: var(--red); }
+  .status-fail .dot { background: var(--red); }
+  .status-warn { background: rgba(184,134,11,0.1); color: var(--amber); }
+  .status-warn .dot { background: var(--amber); }
+
+  /* ===== Employee table (Whirlpool internal) ===== */
+  .table-wrap { border: 1px solid var(--gray-200); overflow-x: auto; }
+  table.data-table { width: 100%; border-collapse: collapse; min-width: 760px; }
+  table.data-table thead tr { background: var(--gray-100); }
+  table.data-table th {
+    text-align: left; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--gray-700); padding: 13px 18px; border-bottom: 1px solid var(--gray-200); font-weight: 600;
+  }
+  table.data-table td { padding: 14px 18px; border-bottom: 1px solid var(--gray-200); font-size: 0.88rem; color: var(--ink); }
+  table.data-table tbody tr:last-child td { border-bottom: none; }
+  table.data-table tbody tr:hover { background: var(--gray-100); }
+
+  .footer-strip {
+    background: var(--navy-deep); padding: 18px 40px; text-align: center; font-size: 0.74rem; color: #7e93ab; letter-spacing: 0.3px;
+  }
+
+  @media (max-width: 980px) {
+    .page-header, .main-nav, .utility-bar, .demo-banner { padding-left: 24px; padding-right: 24px; }
+    .nav-links { display: none; }
+    .container { padding: 0 24px; }
+    .page-header-row { flex-direction: column; align-items: flex-start; }
+    .summary-row { grid-template-columns: 1fr 1fr; }
+    .doc-detail-grid { grid-template-columns: 1fr 1fr; }
+    .company-head { flex-direction: column; align-items: flex-start; }
+    .filter-search { margin-left: 0; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="demo-banner">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
+    <span><strong>Maqueta de demostración.</strong> Catálogo de ejemplo — no representa proveedores o empleados reales de Whirlpool.</span>
+  </div>
+
+  <div class="utility-bar">
+    <a href="#">Directorio de plantas</a>
+    <span class="divider">|</span>
+    <a href="#">Soporte TI</a>
+    <span class="divider">|</span>
+    <a href="#">EN&nbsp;/&nbsp;ES</a>
+  </div>
+
+  <nav class="main-nav">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">WRA</div>
+      <div class="brand-text">
+        <span class="org">Whirlpool</span>
+        <span class="division">Environment · Health · Safety</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="inspecciones.html">Inspecciones</a>
+      <a href="permisos.html">Permisos PTS</a>
+      <a href="personal.html" class="active">Personal y Proveedores</a>
+      <a href="#">Entrenamientos</a>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="page-header-row">
+      <div>
+        <div class="breadcrumb"><a href="index.html">Inicio</a> &nbsp;/&nbsp; Personal y Proveedores</div>
+        <h1>Personal y Proveedores</h1>
+        <p>Expediente documental de empresas contratistas y sus trabajadores, y catálogo de personal interno habilitado para trabajos de alto riesgo.</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="mode-tabs">
+    <button class="mode-tab active" data-mode="contratistas">Empresas contratistas <span class="count">4</span></button>
+    <button class="mode-tab" data-mode="internos">Personal interno Whirlpool <span class="count">5</span></button>
+  </div>
+
+  <div class="container">
+    <section class="section">
+
+      <!-- ===== CONTRATISTAS VIEW ===== -->
+      <div id="viewContratistas">
+
+        <div class="summary-row">
+          <div class="summary-card tone-navy">
+            <div class="summary-label">Empresas registradas</div>
+            <div class="summary-value">4</div>
+            <div class="summary-sub">Con expediente activo</div>
+          </div>
+          <div class="summary-card tone-green">
+            <div class="summary-label">Habilitadas</div>
+            <div class="summary-value">2</div>
+            <div class="summary-sub">Documentación vigente</div>
+          </div>
+          <div class="summary-card tone-amber">
+            <div class="summary-label">Por vencer</div>
+            <div class="summary-value">1</div>
+            <div class="summary-sub">Próximos 30 días</div>
+          </div>
+          <div class="summary-card tone-red">
+            <div class="summary-label">Bloqueadas</div>
+            <div class="summary-value">1</div>
+            <div class="summary-sub">Documento vencido o faltante</div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <h2>Empresas contratistas</h2>
+          <span class="section-tag">Expediente REPSE / SUA / Seguro</span>
+        </div>
+
+        <div class="filter-bar">
+          <button class="filter-chip active" data-filter="todas">Todas</button>
+          <button class="filter-chip" data-filter="ok">Habilitadas</button>
+          <button class="filter-chip" data-filter="warn">Por vencer</button>
+          <button class="filter-chip" data-filter="fail">Bloqueadas</button>
+          <div class="filter-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" placeholder="Buscar empresa…" id="searchCompany">
+          </div>
+        </div>
+
+        <div class="company-list" id="companyList">
+
+          <!-- Empresa 1: OK -->
+          <div class="company-card ok" data-status="ok">
+            <div class="company-head" onclick="toggleCompany(this)">
+              <div class="company-info">
+                <div class="company-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg></div>
+                <div>
+                  <div class="company-name">Andamios y Alturas del Norte S.A. de C.V.</div>
+                  <div class="company-meta">RFC: AAN850214XX1 · 6 trabajadores activos</div>
+                </div>
+              </div>
+              <div class="company-docs">
+                <span class="doc-pill ok"><span class="dot"></span>REPSE</span>
+                <span class="doc-pill ok"><span class="dot"></span>SUA</span>
+                <span class="doc-pill ok"><span class="dot"></span>Seguro</span>
+              </div>
+              <div class="chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+            </div>
+            <div class="company-body">
+              <div class="doc-detail-grid">
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Registro REPSE</div>
+                  <div class="doc-detail-value">REPSE-22-0481</div>
+                  <div class="doc-detail-exp ok">Vigente · vence 14/11/2026</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Alta patronal SUA</div>
+                  <div class="doc-detail-value">Y-1234567-10-3</div>
+                  <div class="doc-detail-exp ok">Vigente · revisión 02/2027</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Póliza de seguro RC</div>
+                  <div class="doc-detail-value">GNP-RC-88231</div>
+                  <div class="doc-detail-exp ok">Vigente · vence 30/09/2026</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Contacto responsable</div>
+                  <div class="doc-detail-value">L. Hinojosa Cantú</div>
+                  <div class="doc-detail-exp">lhinojosa@aan.mx</div>
+                </div>
+              </div>
+              <table class="workers-mini-table">
+                <thead><tr><th>Trabajador</th><th>Certificación</th><th>DC-3</th><th>Estatus</th></tr></thead>
+                <tbody>
+                  <tr><td>R. Cantú Villarreal</td><td>Espacios confinados</td><td>DC3-04421</td><td><span class="status-pill status-ok"><span class="dot"></span>Vigente</span></td></tr>
+                  <tr><td>E. Domínguez Paz</td><td>Trabajo en alturas</td><td>DC3-04488</td><td><span class="status-pill status-ok"><span class="dot"></span>Vigente</span></td></tr>
+                  <tr><td>F. Olvera Ramos</td><td>Trabajo en alturas</td><td>DC3-03990</td><td><span class="status-pill status-warn"><span class="dot"></span>Vence en 18 días</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Empresa 2: WARN -->
+          <div class="company-card ok" data-status="warn">
+            <div class="company-head" onclick="toggleCompany(this)">
+              <div class="company-info">
+                <div class="company-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg></div>
+                <div>
+                  <div class="company-name">Servicios Industriales Caliente S. de R.L.</div>
+                  <div class="company-meta">RFC: SIC910630XX5 · 4 trabajadores activos</div>
+                </div>
+              </div>
+              <div class="company-docs">
+                <span class="doc-pill ok"><span class="dot"></span>REPSE</span>
+                <span class="doc-pill warn"><span class="dot"></span>SUA</span>
+                <span class="doc-pill ok"><span class="dot"></span>Seguro</span>
+              </div>
+              <div class="chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+            </div>
+            <div class="company-body">
+              <div class="doc-detail-grid">
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Registro REPSE</div>
+                  <div class="doc-detail-value">REPSE-23-1190</div>
+                  <div class="doc-detail-exp ok">Vigente · vence 02/2027</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Alta patronal SUA</div>
+                  <div class="doc-detail-value">Y-7765432-44-1</div>
+                  <div class="doc-detail-exp warn">Vence en 12 días — renovar</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Póliza de seguro RC</div>
+                  <div class="doc-detail-value">AXA-RC-55102</div>
+                  <div class="doc-detail-exp ok">Vigente · vence 06/2027</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Contacto responsable</div>
+                  <div class="doc-detail-value">M. Reséndez Ibarra</div>
+                  <div class="doc-detail-exp">mresendez@sic.mx</div>
+                </div>
+              </div>
+              <table class="workers-mini-table">
+                <thead><tr><th>Trabajador</th><th>Certificación</th><th>DC-3</th><th>Estatus</th></tr></thead>
+                <tbody>
+                  <tr><td>P. Garza Elizondo</td><td>Trabajos calientes</td><td>DC3-02218</td><td><span class="status-pill status-ok"><span class="dot"></span>Vigente</span></td></tr>
+                  <tr><td>S. Luna Briones</td><td>Trabajos calientes</td><td>DC3-02265</td><td><span class="status-pill status-ok"><span class="dot"></span>Vigente</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Empresa 3: FAIL -->
+          <div class="company-card blocked" data-status="fail">
+            <div class="company-head" onclick="toggleCompany(this)">
+              <div class="company-info">
+                <div class="company-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg></div>
+                <div>
+                  <div class="company-name">Mantenimiento Industrial del Bravo S.A.</div>
+                  <div class="company-meta">RFC: MIB180322XX9 · 3 trabajadores activos</div>
+                </div>
+              </div>
+              <div class="company-docs">
+                <span class="doc-pill fail"><span class="dot"></span>REPSE</span>
+                <span class="doc-pill ok"><span class="dot"></span>SUA</span>
+                <span class="doc-pill fail"><span class="dot"></span>Seguro</span>
+              </div>
+              <div class="chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+            </div>
+            <div class="company-body">
+              <div class="doc-detail-grid">
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Registro REPSE</div>
+                  <div class="doc-detail-value">REPSE-21-0093</div>
+                  <div class="doc-detail-exp fail">Venció hace 9 días</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Alta patronal SUA</div>
+                  <div class="doc-detail-value">Y-3321098-77-2</div>
+                  <div class="doc-detail-exp ok">Vigente · vence 08/2026</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Póliza de seguro RC</div>
+                  <div class="doc-detail-value">—</div>
+                  <div class="doc-detail-exp fail">No registrada en el sistema</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Contacto responsable</div>
+                  <div class="doc-detail-value">J. Aguilar Soto</div>
+                  <div class="doc-detail-exp">jaguilar@mib.mx</div>
+                </div>
+              </div>
+              <table class="workers-mini-table">
+                <thead><tr><th>Trabajador</th><th>Certificación</th><th>DC-3</th><th>Estatus</th></tr></thead>
+                <tbody>
+                  <tr><td>D. Pérez Cavazos</td><td>Espacios confinados</td><td>DC3-01987</td><td><span class="status-pill status-fail"><span class="dot"></span>Empresa bloqueada</span></td></tr>
+                </tbody>
+              </table>
+              <div style="margin-top: 14px; font-size: 0.82rem; color: var(--red); display: flex; align-items: center; gap: 8px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0;"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
+                Esta empresa no puede asignarse a ningún permiso de trabajo hasta regularizar REPSE y póliza de seguro.
+              </div>
+            </div>
+          </div>
+
+          <!-- Empresa 4: OK -->
+          <div class="company-card ok" data-status="ok">
+            <div class="company-head" onclick="toggleCompany(this)">
+              <div class="company-info">
+                <div class="company-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg></div>
+                <div>
+                  <div class="company-name">Grupo EHS Consultores Querétaro</div>
+                  <div class="company-meta">RFC: GEC160815XX3 · 2 trabajadores activos</div>
+                </div>
+              </div>
+              <div class="company-docs">
+                <span class="doc-pill ok"><span class="dot"></span>REPSE</span>
+                <span class="doc-pill ok"><span class="dot"></span>SUA</span>
+                <span class="doc-pill ok"><span class="dot"></span>Seguro</span>
+              </div>
+              <div class="chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+            </div>
+            <div class="company-body">
+              <div class="doc-detail-grid">
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Registro REPSE</div>
+                  <div class="doc-detail-value">REPSE-24-0732</div>
+                  <div class="doc-detail-exp ok">Vigente · vence 05/2027</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Alta patronal SUA</div>
+                  <div class="doc-detail-value">Y-5510023-19-4</div>
+                  <div class="doc-detail-exp ok">Vigente · revisión 01/2027</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Póliza de seguro RC</div>
+                  <div class="doc-detail-value">MAPFRE-RC-30021</div>
+                  <div class="doc-detail-exp ok">Vigente · vence 12/2026</div>
+                </div>
+                <div class="doc-detail-card">
+                  <div class="doc-detail-label">Contacto responsable</div>
+                  <div class="doc-detail-value">C. Vega Treviño</div>
+                  <div class="doc-detail-exp">cvega@gecqro.mx</div>
+                </div>
+              </div>
+              <table class="workers-mini-table">
+                <thead><tr><th>Trabajador</th><th>Certificación</th><th>DC-3</th><th>Estatus</th></tr></thead>
+                <tbody>
+                  <tr><td>N. Cordero Lima</td><td>Identificación de peligros</td><td>DC3-05012</td><td><span class="status-pill status-ok"><span class="dot"></span>Vigente</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== INTERNOS VIEW ===== -->
+      <div id="viewInternos" style="display: none;">
+
+        <div class="summary-row">
+          <div class="summary-card tone-navy">
+            <div class="summary-label">Empleados habilitados</div>
+            <div class="summary-value">5</div>
+            <div class="summary-sub">Con perfil de alto riesgo</div>
+          </div>
+          <div class="summary-card tone-green">
+            <div class="summary-label">Vigentes</div>
+            <div class="summary-value">3</div>
+            <div class="summary-sub">Constancia interna al día</div>
+          </div>
+          <div class="summary-card tone-amber">
+            <div class="summary-label">Por vencer</div>
+            <div class="summary-value">1</div>
+            <div class="summary-sub">Próximos 30 días</div>
+          </div>
+          <div class="summary-card tone-red">
+            <div class="summary-label">Vencidos</div>
+            <div class="summary-value">1</div>
+            <div class="summary-sub">Bloqueados para asignación</div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <h2>Personal interno Whirlpool</h2>
+          <span class="section-tag">Constancia de capacitación interna</span>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>No. Empleado</th>
+                <th>Nombre</th>
+                <th>Planta / Área</th>
+                <th>Capacitación habilitada</th>
+                <th>Vigencia</th>
+                <th>Estatus</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span style="font-family: var(--font-mono); color: var(--gray-400);">WHR-22841</span></td>
+                <td>R. Treviño Saldaña</td>
+                <td>Monterrey · Mantenimiento</td>
+                <td>Espacios confinados</td>
+                <td>08/2026</td>
+                <td><span class="status-pill status-ok"><span class="dot"></span>Vigente</span></td>
+              </tr>
+              <tr>
+                <td><span style="font-family: var(--font-mono); color: var(--gray-400);">WHR-19023</span></td>
+                <td>L. Garza Montemayor</td>
+                <td>Monterrey · Mantenimiento</td>
+                <td>Trabajo en alturas</td>
+                <td>11/2026</td>
+                <td><span class="status-pill status-ok"><span class="dot"></span>Vigente</span></td>
+              </tr>
+              <tr>
+                <td><span style="font-family: var(--font-mono); color: var(--gray-400);">WHR-30412</span></td>
+                <td>M. Ibarra Cepeda</td>
+                <td>Querétaro · Facilidades</td>
+                <td>Espacios confinados</td>
+                <td>07/2026</td>
+                <td><span class="status-pill status-warn"><span class="dot"></span>Vence en 21 días</span></td>
+              </tr>
+              <tr>
+                <td><span style="font-family: var(--font-mono); color: var(--gray-400);">WHR-27765</span></td>
+                <td>A. Ríos Fuentes</td>
+                <td>Apodaca · Mantenimiento</td>
+                <td>Trabajos calientes</td>
+                <td>03/2026</td>
+                <td><span class="status-pill status-fail"><span class="dot"></span>Vencido — bloqueado</span></td>
+              </tr>
+              <tr>
+                <td><span style="font-family: var(--font-mono); color: var(--gray-400);">WHR-15598</span></td>
+                <td>V. Solís Hernández</td>
+                <td>Monterrey · Facilidades</td>
+                <td>Trabajo en alturas</td>
+                <td>09/2026</td>
+                <td><span class="status-pill status-ok"><span class="dot"></span>Vigente</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </section>
+  </div>
+
+  <div class="footer-strip">
+    © 2026 Whirlpool Corporation · Portal interno de Medio Ambiente, Salud y Seguridad · Maqueta de demostración
+  </div>
+
+  <script>
+    // ===== Mode tabs =====
+    const modeTabs = document.querySelectorAll('.mode-tab');
+    modeTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        modeTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const mode = tab.dataset.mode;
+        document.getElementById('viewContratistas').style.display = mode === 'contratistas' ? 'block' : 'none';
+        document.getElementById('viewInternos').style.display = mode === 'internos' ? 'block' : 'none';
+      });
+    });
+
+    // ===== Expand/collapse company cards =====
+    function toggleCompany(headEl) {
+      const card = headEl.closest('.company-card');
+      card.classList.toggle('expanded');
+    }
+
+    // ===== Filter chips =====
+    const chips = document.querySelectorAll('.filter-chip');
+    const cards = document.querySelectorAll('.company-card');
+    const searchInput = document.getElementById('searchCompany');
+
+    function applyFilters() {
+      const activeChip = document.querySelector('.filter-chip.active').dataset.filter;
+      const searchTerm = searchInput.value.toLowerCase();
+      cards.forEach(card => {
+        const matchesStatus = activeChip === 'todas' || card.dataset.status === activeChip;
+        const matchesSearch = card.textContent.toLowerCase().includes(searchTerm);
+        card.style.display = (matchesStatus && matchesSearch) ? '' : 'none';
+      });
+    }
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        applyFilters();
+      });
+    });
+
+    searchInput.addEventListener('input', applyFilters);
+  </script>
+
+</body>
+</html>
