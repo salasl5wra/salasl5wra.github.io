@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Permisos de Trabajo Seguro — Portal EHS · WRA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&family=Roboto+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-deep: #00264d;
+    --navy: #003b71;
+    --blue: #009cde;
+    --blue-dark: #0078ad;
+    --ink: #1a1f29;
+    --gray-700: #4a5160;
+    --gray-400: #8891a0;
+    --gray-200: #e2e6eb;
+    --gray-100: #f1f3f6;
+    --paper: #fbfbfc;
+    --safe-green: #2f8f5b;
+    --amber: #b8860b;
+    --red: #c0392b;
+
+    --font-display: 'Archivo', sans-serif;
+    --font-body: 'Source Sans 3', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+
+  /* ===== Demo banner ===== */
+  .demo-banner {
+    background: #fff7e6;
+    border-bottom: 1px solid #f0d999;
+    color: #6b4e00;
+    font-size: 0.82rem;
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .demo-banner svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .demo-banner strong { font-weight: 700; }
+
+  /* ===== Utility bar ===== */
+  .utility-bar {
+    background: var(--navy-deep);
+    color: #c9d6e6;
+    font-size: 0.78rem;
+    padding: 7px 40px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 24px;
+    letter-spacing: 0.2px;
+  }
+  .utility-bar a { text-decoration: none; color: #c9d6e6; opacity: 0.9; transition: opacity 0.15s; }
+  .utility-bar a:hover { opacity: 1; color: #ffffff; }
+  .utility-bar .divider { opacity: 0.3; }
+
+  /* ===== Main nav ===== */
+  .main-nav {
+    background: var(--navy);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    border-bottom: 3px solid var(--blue);
+  }
+
+  .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+
+  .brand-mark {
+    width: 38px; height: 38px;
+    border: 2px solid var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800;
+    color: #ffffff; font-size: 0.95rem; letter-spacing: 0.5px;
+  }
+
+  .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-text .org { font-family: var(--font-display); font-weight: 700; color: #ffffff; font-size: 1.05rem; letter-spacing: 0.5px; }
+  .brand-text .division { font-size: 0.7rem; color: #9fc4e6; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600; }
+
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+  .nav-links a {
+    text-decoration: none; color: #dbe7f3; font-size: 0.88rem; font-weight: 500;
+    letter-spacing: 0.2px; position: relative; padding: 8px 0; transition: color 0.15s;
+  }
+  .nav-links a:hover { color: #ffffff; }
+  .nav-links a.active { color: #ffffff; }
+  .nav-links a.active::after {
+    content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 2px; background: var(--blue);
+  }
+
+  /* ===== Page header ===== */
+  .page-header {
+    background: linear-gradient(165deg, var(--navy-deep) 0%, var(--navy) 100%);
+    color: #ffffff;
+    padding: 40px 40px 34px;
+  }
+
+  .breadcrumb {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.5px;
+    color: #8fb8da;
+    margin-bottom: 14px;
+  }
+  .breadcrumb a { color: #8fb8da; text-decoration: none; }
+  .breadcrumb a:hover { color: #ffffff; }
+
+  .page-header-row {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 30px;
+  }
+
+  .page-header h1 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .page-header p {
+    color: #bcd2e6;
+    font-size: 0.95rem;
+    margin: 0;
+    max-width: 600px;
+  }
+
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+
+  .btn {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 12px 24px;
+    border-radius: 2px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary { background: var(--blue); color: #ffffff; border: 1px solid var(--blue); }
+  .btn-primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
+  .btn-primary:disabled { background: var(--gray-200); border-color: var(--gray-200); color: var(--gray-400); cursor: not-allowed; }
+
+  .btn-outline { background: #ffffff; color: var(--navy); border: 1px solid var(--gray-200); }
+  .btn-outline:hover { border-color: var(--blue); color: var(--blue); }
+
+  /* ===== Step indicator ===== */
+  .steps {
+    display: flex;
+    margin-top: -1px;
+    transform: translateY(-1px);
+  }
+
+  .step {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid var(--gray-200);
+    border-left: none;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+  }
+  .step:first-child { border-left: 1px solid var(--gray-200); }
+
+  .step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    color: var(--gray-400);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .step.active .step-num { background: var(--blue); color: #ffffff; }
+  .step.done .step-num { background: var(--safe-green); color: #ffffff; }
+
+  .step-label { font-size: 0.82rem; font-weight: 600; color: var(--gray-400); }
+  .step.active .step-label { color: var(--navy); }
+  .step.done .step-label { color: var(--ink); }
+
+  /* ===== Section ===== */
+  .section { padding: 36px 0 70px; }
+
+  .panel {
+    border: 1px solid var(--gray-200);
+    background: #ffffff;
+    margin-bottom: 24px;
+  }
+
+  .panel-head {
+    padding: 22px 26px;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .panel-head h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0 0 5px;
+  }
+
+  .panel-head p { font-size: 0.84rem; color: var(--gray-700); margin: 0; max-width: 540px; }
+
+  .panel-body { padding: 26px; }
+
+  /* ===== Risk type selector ===== */
+  .risk-selector {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--gray-200);
+  }
+
+  .risk-option {
+    background: #ffffff;
+    padding: 24px 18px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    border: none;
+    transition: background 0.15s;
+    font-family: var(--font-body);
+  }
+
+  .risk-option:hover { background: var(--gray-100); }
+  .risk-option.selected { background: #eef7fd; }
+  .risk-option.selected .risk-icon { background: var(--blue); color: #ffffff; }
+
+  .risk-icon {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    color: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .risk-icon svg { width: 24px; height: 24px; }
+
+  .risk-name { font-size: 0.88rem; font-weight: 700; color: var(--ink); }
+  .risk-nom { font-family: var(--font-mono); font-size: 0.68rem; color: var(--gray-400); }
+
+  /* ===== Form grid ===== */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+  }
+
+  .form-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .form-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  .field-group label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 7px;
+  }
+
+  .field-group select, .field-group input, .field-group textarea {
+    width: 100%;
+    border: 1px solid var(--gray-200);
+    padding: 10px 12px;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--ink);
+    background: #ffffff;
+  }
+
+  .field-group textarea { resize: vertical; min-height: 70px; }
+
+  .field-group.full { grid-column: 1 / -1; }
+
+  /* ===== Workers table ===== */
+  .workers-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .workers-table th {
+    text-align: left; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.6px;
+    text-transform: uppercase; color: var(--gray-400); padding: 8px 10px; border-bottom: 1px solid var(--gray-200);
+  }
+  .workers-table td { padding: 8px 10px; border-bottom: 1px solid var(--gray-200); font-size: 0.85rem; }
+  .workers-table input { width: 100%; border: 1px solid var(--gray-200); padding: 6px 8px; font-size: 0.84rem; }
+
+  .dc3-status { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; }
+  .dc3-status.ok { color: var(--safe-green); }
+  .dc3-status.fail { color: var(--red); }
+  .dc3-status .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .dc3-status.ok .dot { background: var(--safe-green); }
+  .dc3-status.fail .dot { background: var(--red); }
+
+  .add-worker-btn {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--blue);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  .add-worker-btn:hover { text-decoration: underline; }
+
+  /* ===== Checklist items (reused pattern) ===== */
+  .checklist-items { display: flex; flex-direction: column; gap: 1px; background: var(--gray-200); border: 1px solid var(--gray-200); }
+
+  .checklist-item {
+    background: #ffffff;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .checklist-item-text { font-size: 0.88rem; color: var(--ink); flex: 1; }
+  .checklist-item-num { font-family: var(--font-mono); color: var(--gray-400); font-size: 0.76rem; margin-right: 10px; }
+
+  .checklist-options { display: flex; gap: 8px; flex-shrink: 0; }
+
+  .opt-btn {
+    font-family: var(--font-body);
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border: 1px solid var(--gray-200);
+    background: #ffffff;
+    color: var(--gray-700);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+  }
+
+  .opt-btn.ok.selected { background: var(--safe-green); color: #ffffff; border-color: var(--safe-green); }
+  .opt-btn.fail.selected { background: var(--red); color: #ffffff; border-color: var(--red); }
+  .opt-btn.na.selected { background: var(--gray-400); color: #ffffff; border-color: var(--gray-400); }
+  .opt-btn:hover:not(.selected) { border-color: var(--blue); }
+
+  /* ===== Atmosphere monitoring (confinados) ===== */
+  .atm-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  .atm-table th, .atm-table td {
+    border: 1px solid var(--gray-200); padding: 8px 10px; font-size: 0.8rem; text-align: center;
+  }
+  .atm-table th { background: var(--gray-100); font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; color: var(--gray-700); }
+  .atm-table td:first-child { text-align: left; font-weight: 600; background: var(--gray-100); }
+  .atm-table input { width: 56px; border: 1px solid var(--gray-200); padding: 5px; text-align: center; font-size: 0.8rem; }
+  .atm-input-warn { border-color: var(--red) !important; background: #fdecea; }
+  .atm-range { font-size: 0.68rem; color: var(--gray-400); display: block; margin-top: 2px; }
+
+  /* ===== Fall calc (alturas) ===== */
+  .calc-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 14px;
+    padding: 20px;
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+  }
+  .calc-field label { font-family: var(--font-mono); font-size: 0.66rem; color: var(--gray-400); display: block; margin-bottom: 6px; }
+  .calc-field input { width: 100%; border: 1px solid var(--gray-200); padding: 8px; text-align: center; font-family: var(--font-mono); font-weight: 600; }
+  .calc-result {
+    margin-top: 16px;
+    padding: 14px 18px;
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    font-weight: 600;
+    border-left: 4px solid var(--gray-400);
+    background: #ffffff;
+  }
+  .calc-result.safe { border-color: var(--safe-green); color: var(--safe-green); }
+  .calc-result.danger { border-color: var(--red); color: var(--red); }
+
+  /* ===== Signature block ===== */
+  .sig-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--gray-200);
+    border: 1px solid var(--gray-200);
+  }
+
+  .sig-card { background: #ffffff; padding: 22px; }
+  .sig-role {
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.6px; text-transform: uppercase;
+    color: var(--gray-400); margin-bottom: 10px;
+  }
+  .sig-name { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin-bottom: 14px; }
+
+  .sig-pad {
+    border: 1.5px dashed var(--gray-200);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    transition: all 0.15s;
+    font-family: var(--font-display);
+    font-style: italic;
+  }
+  .sig-pad:hover { border-color: var(--blue); color: var(--blue); }
+  .sig-pad.signed {
+    border: 1.5px solid var(--safe-green);
+    background: #f3fbf6;
+    color: var(--safe-green);
+    font-weight: 600;
+    font-style: normal;
+  }
+  .sig-meta { font-family: var(--font-mono); font-size: 0.68rem; color: var(--gray-400); margin-top: 8px; }
+
+  /* ===== Action footer ===== */
+  .form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  .validation-note {
+    font-size: 0.82rem;
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .validation-note svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .validation-note.hidden { display: none; }
+
+  /* ===== Result panel (QR + status) ===== */
+  .result-panel { display: none; }
+  .result-panel.show { display: block; }
+
+  .result-hero {
+    background: linear-gradient(165deg, var(--navy-deep) 0%, var(--navy) 100%);
+    color: #ffffff;
+    padding: 44px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .result-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: rgba(47,143,91,0.18);
+    color: #8fe0b4;
+    padding: 6px 14px;
+    margin-bottom: 18px;
+  }
+  .result-status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--safe-green); }
+
+  .result-hero h2 {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+  }
+
+  .result-folio { font-family: var(--font-mono); font-size: 0.95rem; color: #9fc4e6; margin-bottom: 18px; }
+
+  .result-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 420px; }
+  .result-meta-item .label { font-family: var(--font-mono); font-size: 0.66rem; color: #8fb8da; text-transform: uppercase; letter-spacing: 0.5px; }
+  .result-meta-item .value { font-size: 0.88rem; font-weight: 600; margin-top: 3px; }
+
+  .qr-box {
+    background: #ffffff;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .qr-box svg { width: 160px; height: 160px; }
+  .qr-uuid { font-family: var(--font-mono); font-size: 0.62rem; color: var(--gray-700); text-align: center; word-break: break-all; }
+
+  .result-actions {
+    padding: 22px 44px;
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    border-top: none;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+  }
+
+  .footer-strip {
+    background: var(--navy-deep);
+    padding: 18px 40px;
+    text-align: center;
+    font-size: 0.74rem;
+    color: #7e93ab;
+    letter-spacing: 0.3px;
+  }
+
+  @media (max-width: 980px) {
+    .page-header, .main-nav, .utility-bar, .demo-banner { padding-left: 24px; padding-right: 24px; }
+    .nav-links { display: none; }
+    .container { padding: 0 24px; }
+    .page-header-row { flex-direction: column; align-items: flex-start; }
+    .steps { flex-direction: column; }
+    .step:first-child { border-left: 1px solid var(--gray-200); }
+    .risk-selector { grid-template-columns: 1fr 1fr; }
+    .form-grid, .form-grid.cols-2, .form-grid.cols-4 { grid-template-columns: 1fr; }
+    .sig-grid { grid-template-columns: 1fr; }
+    .calc-box { grid-template-columns: 1fr 1fr; }
+    .result-hero { grid-template-columns: 1fr; }
+    .result-meta-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="demo-banner">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
+    <span><strong>Maqueta de demostración.</strong> Este formulario simula el flujo de un Permiso de Trabajo Seguro. No guarda datos reales, no genera firmas con validez legal y no debe usarse en operación — requiere un backend con autenticación antes de cualquier uso productivo.</span>
+  </div>
+
+  <div class="utility-bar">
+    <a href="#">Directorio de plantas</a>
+    <span class="divider">|</span>
+    <a href="#">Soporte TI</a>
+    <span class="divider">|</span>
+    <a href="#">EN&nbsp;/&nbsp;ES</a>
+  </div>
+
+  <nav class="main-nav">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">WRA</div>
+      <div class="brand-text">
+        <span class="org">Whirlpool</span>
+        <span class="division">Environment · Health · Safety</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="inspecciones.html">Inspecciones</a>
+      <a href="permisos.html" class="active">Permisos PTS</a>
+      <a href="#">Entrenamientos</a>
+      <a href="#">Documentación</a>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="page-header-row">
+      <div>
+        <div class="breadcrumb"><a href="index.html">Inicio</a> &nbsp;/&nbsp; Permisos de Trabajo Seguro</div>
+        <h1>Permiso de Trabajo Seguro (PTS)</h1>
+        <p>Formulario unificado para trabajos de alto riesgo — espacios confinados, alturas, trabajos calientes e identificación de peligros no rutinarios, conforme a NOM-033, NOM-009 y NOM-027-STPS.</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="steps">
+    <div class="step active" id="step1Indicator">
+      <div class="step-num">1</div>
+      <div class="step-label">Tipo de riesgo</div>
+    </div>
+    <div class="step" id="step2Indicator">
+      <div class="step-num">2</div>
+      <div class="step-label">Datos generales</div>
+    </div>
+    <div class="step" id="step3Indicator">
+      <div class="step-num">3</div>
+      <div class="step-label">Checklist de seguridad</div>
+    </div>
+    <div class="step" id="step4Indicator">
+      <div class="step-num">4</div>
+      <div class="step-label">Firmas y autorización</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <section class="section">
+
+      <!-- ===== STEP 1: Risk type ===== -->
+      <div class="panel" id="panelStep1">
+        <div class="panel-head">
+          <div>
+            <h3>1. Selecciona el tipo de trabajo de alto riesgo</h3>
+            <p>El sistema carga automáticamente los campos obligatorios, checklist y validaciones correspondientes a la norma aplicable.</p>
+          </div>
+        </div>
+        <div class="risk-selector" id="riskSelector">
+          <button class="risk-option selected" data-risk="confinados">
+            <div class="risk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <div class="risk-name">Espacios confinados</div>
+            <div class="risk-nom">NOM-033-STPS</div>
+          </button>
+          <button class="risk-option" data-risk="alturas">
+            <div class="risk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 7v10l8 5 8-5V7l-8-5Z"/><path d="M12 22V12M12 12 4 7M12 12l8-5"/></svg></div>
+            <div class="risk-name">Trabajo en alturas</div>
+            <div class="risk-nom">NOM-009-STPS</div>
+          </button>
+          <button class="risk-option" data-risk="calientes">
+            <div class="risk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2c1 3-2 4-2 7a4 4 0 0 0 8 0c0-1-.5-2-1-2 .5 2-1 3-2 3-1.5 0-2-1.5-1-3-2 0-3 1.5-2.5 3.5C10.5 13 9 12 9 9c0-3 3-4 3-7Z"/><path d="M9 18a3 3 0 1 0 6 0c0-1-1-2-1-2"/></svg></div>
+            <div class="risk-name">Trabajos calientes</div>
+            <div class="risk-nom">NOM-027-STPS</div>
+          </button>
+          <button class="risk-option" data-risk="nr">
+            <div class="risk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <div class="risk-name">Identificación de peligros</div>
+            <div class="risk-nom">Actividad no rutinaria</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2: General data ===== -->
+      <div class="panel" id="panelStep2">
+        <div class="panel-head">
+          <div>
+            <h3>2. Datos generales del trabajo</h3>
+            <p>Información del contratista, planta, área y trabajadores autorizados.</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="form-grid cols-4" style="margin-bottom: 22px;">
+            <div class="field-group">
+              <label>Folio</label>
+              <input type="text" value="PTS-0148" readonly style="background: var(--gray-100); color: var(--gray-400);">
+            </div>
+            <div class="field-group">
+              <label>Planta / Área</label>
+              <select>
+                <option>Monterrey · Línea 3</option>
+                <option>Monterrey · Patio norte</option>
+                <option>Querétaro · Tanque 2</option>
+                <option>Apodaca · Almacén</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Empresa contratista</label>
+              <input type="text" placeholder="Nombre de la empresa">
+            </div>
+            <div class="field-group">
+              <label>Equipo / Máquina</label>
+              <input type="text" placeholder="Identificador del equipo">
+            </div>
+          </div>
+
+          <div class="form-grid cols-4" style="margin-bottom: 22px;">
+            <div class="field-group">
+              <label>Fecha de inicio</label>
+              <input type="date" value="2026-06-16">
+            </div>
+            <div class="field-group">
+              <label>Hora de inicio</label>
+              <input type="time" value="08:00">
+            </div>
+            <div class="field-group">
+              <label>Fecha de término</label>
+              <input type="date" value="2026-06-16">
+            </div>
+            <div class="field-group">
+              <label>Hora de término</label>
+              <input type="time" value="16:00">
+            </div>
+          </div>
+
+          <div class="field-group full" style="margin-bottom: 24px;">
+            <label>Descripción de la actividad</label>
+            <textarea placeholder="Describe qué se hará y cómo, incluyendo herramientas o equipos involucrados…"></textarea>
+          </div>
+
+          <div class="field-group full">
+            <label>Trabajadores autorizados — validación de competencias (DC-3)</label>
+            <table class="workers-table">
+              <thead>
+                <tr><th>Nombre</th><th>Certificación requerida</th><th style="width:160px;">Estatus DC-3</th></tr>
+              </thead>
+              <tbody id="workersBody">
+                <tr>
+                  <td><input type="text" value="J. Martínez Reyes"></td>
+                  <td id="cert-req-0">Espacios confinados</td>
+                  <td><span class="dc3-status ok"><span class="dot"></span>Vigente · vence 03/2027</span></td>
+                </tr>
+                <tr>
+                  <td><input type="text" value="A. Salinas Ortiz"></td>
+                  <td id="cert-req-1">Espacios confinados</td>
+                  <td><span class="dc3-status fail"><span class="dot"></span>Vencido — bloqueado</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="add-worker-btn" id="addWorkerBtn">+ Agregar trabajador</button>
+            <div class="validation-note" id="dc3Warning" style="margin-top: 12px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
+              A. Salinas Ortiz tiene su constancia DC-3 vencida para este riesgo — el sistema bloquea su asignación hasta renovar la certificación.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 3: Dynamic checklist by risk ===== -->
+      <div class="panel" id="panelStep3">
+        <div class="panel-head">
+          <div>
+            <h3 id="checklistTitle">3. Checklist de seguridad — Espacios confinados</h3>
+            <p>Cada punto debe marcarse antes de continuar. Los campos numéricos fuera de rango bloquean el avance a "Firmado".</p>
+          </div>
+        </div>
+        <div class="panel-body">
+
+          <!-- Atmosphere monitoring, shown only for confinados -->
+          <div id="atmosphereBlock" style="margin-bottom: 26px;">
+            <div class="field-group" style="margin-bottom: 10px;"><label>Monitoreo de la atmósfera — lectura inicial</label></div>
+            <table class="atm-table">
+              <thead><tr><th>Gas</th><th>Lectura inicial</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Oxígeno <span class="atm-range">19.5% – 23.5%</span></td>
+                  <td><input type="number" step="0.1" id="atmO2" placeholder="%"></td>
+                </tr>
+                <tr>
+                  <td>Monóxido de carbono <span class="atm-range">&lt; 20 ppm</span></td>
+                  <td><input type="number" id="atmCO" placeholder="ppm"></td>
+                </tr>
+                <tr>
+                  <td>% LEL <span class="atm-range">&lt; 10%</span></td>
+                  <td><input type="number" id="atmLEL" placeholder="%"></td>
+                </tr>
+                <tr>
+                  <td>H2S <span class="atm-range">&lt; 5 ppm</span></td>
+                  <td><input type="number" id="atmH2S" placeholder="ppm"></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="validation-note hidden" id="atmWarning" style="margin-top: 12px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
+              Una o más lecturas están fuera del rango seguro. No se puede continuar hasta corregir la condición o documentar control adicional.
+            </div>
+          </div>
+
+          <!-- Fall calculation, shown only for alturas -->
+          <div id="fallCalcBlock" style="margin-bottom: 26px; display: none;">
+            <div class="field-group" style="margin-bottom: 10px;"><label>Cálculo de distancia de caída — DC = LL + DD + HH + FS</label></div>
+            <div class="calc-box">
+              <div class="calc-field"><label>DT (m) — anclaje a suelo</label><input type="number" id="calcDT" value="6"></div>
+              <div class="calc-field"><label>LL (m) — eslinga</label><input type="number" id="calcLL" value="1.8"></div>
+              <div class="calc-field"><label>DD (m) — desaceleración</label><input type="number" id="calcDD" value="1.07"></div>
+              <div class="calc-field"><label>HH (m) — altura trabajador</label><input type="number" id="calcHH" value="1.8"></div>
+              <div class="calc-field"><label>FS (m) — factor seguridad</label><input type="number" id="calcFS" value="1"></div>
+            </div>
+            <div class="calc-result" id="calcResult">DC = 5.67 m — debe ser menor a DT (6 m) para permitir el trabajo</div>
+          </div>
+
+          <div class="checklist-items" id="checklistItems"></div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 4: Signatures ===== -->
+      <div class="panel" id="panelStep4">
+        <div class="panel-head">
+          <div>
+            <h3>4. Firmas y autorización</h3>
+            <p>Cada firma simulada registraría usuario, timestamp e IP de origen en el sistema real. El permiso no puede activarse sin las 4 firmas.</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="sig-grid">
+            <div class="sig-card">
+              <div class="sig-role">Supervisor contratista</div>
+              <div class="sig-name">Por asignar</div>
+              <div class="sig-pad" data-sig="contratista">Tocar para firmar</div>
+              <div class="sig-meta">—</div>
+            </div>
+            <div class="sig-card">
+              <div class="sig-role">Supervisor Whirlpool</div>
+              <div class="sig-name">Por asignar</div>
+              <div class="sig-pad" data-sig="whirlpool">Tocar para firmar</div>
+              <div class="sig-meta">—</div>
+            </div>
+            <div class="sig-card">
+              <div class="sig-role">Área afectada</div>
+              <div class="sig-name">Por asignar</div>
+              <div class="sig-pad" data-sig="area">Tocar para firmar</div>
+              <div class="sig-meta">—</div>
+            </div>
+            <div class="sig-card">
+              <div class="sig-role">Autorización EHS</div>
+              <div class="sig-name">Por asignar</div>
+              <div class="sig-pad" data-sig="ehs">Tocar para firmar</div>
+              <div class="sig-meta">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button class="btn btn-outline" id="prevBtn" style="visibility: hidden;">← Atrás</button>
+        <button class="btn btn-primary" id="nextBtn">Continuar →</button>
+      </div>
+
+      <!-- ===== RESULT: QR + status ===== -->
+      <div class="result-panel" id="resultPanel">
+        <div class="result-hero">
+          <div>
+            <div class="result-status"><span class="dot"></span>Permiso activo</div>
+            <h2>Permiso autorizado — Espacios confinados</h2>
+            <div class="result-folio">Folio PTS-0148 · UUID a3f9-7c21-4e8b-9d10</div>
+            <div class="result-meta-grid">
+              <div class="result-meta-item"><div class="label">Planta / Área</div><div class="value">Monterrey · Línea 3</div></div>
+              <div class="result-meta-item"><div class="label">Vigencia</div><div class="value">16 jun 08:00 – 16 jun 16:00</div></div>
+              <div class="result-meta-item"><div class="label">Trabajadores</div><div class="value">2 autorizados</div></div>
+              <div class="result-meta-item"><div class="label">Tipo de riesgo</div><div class="value">NOM-033-STPS</div></div>
+            </div>
+          </div>
+          <div class="qr-box">
+            <svg viewBox="0 0 100 100" id="qrSvg"></svg>
+            <div class="qr-uuid">Escanear para vista rápida de auditoría en piso</div>
+          </div>
+        </div>
+        <div class="result-actions">
+          <button class="btn btn-outline">Descargar PDF autocontenido</button>
+          <button class="btn btn-primary">Ver en panel de permisos activos</button>
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+  <div class="footer-strip">
+    © 2026 Whirlpool Corporation · Portal interno de Medio Ambiente, Salud y Seguridad · Maqueta de demostración
+  </div>
+
+  <script>
+    // ============ Checklist data per risk type ============
+    const checklistData = {
+      confinados: {
+        title: "Checklist de seguridad — Espacios confinados",
+        cert: "Espacios confinados",
+        items: [
+          "Permiso de entrada vigente y firmado",
+          "Análisis de riesgo disponible y comunicado",
+          "Mínimo 2 trabajadores capacitados (1 vigía afuera)",
+          "Equipo desenergizado (LOTO) si aplica",
+          "Ventilación mecánica y/o natural disponible",
+          "Equipo de comunicación funcionando",
+          "Arnés y línea de vida verificados",
+          "Equipo de rescate disponible en sitio"
+        ]
+      },
+      alturas: {
+        title: "Checklist de seguridad — Trabajo en alturas",
+        cert: "Trabajo en alturas",
+        items: [
+          "Punto de anclaje certificado o verificado por persona competente",
+          "Distancia segura a líneas eléctricas",
+          "Condiciones ambientales adecuadas (sin lluvia, viento < 25 km/h)",
+          "Prevención de caída de objetos (mallas, porta herramientas)",
+          "Arnés y línea de vida en buenas condiciones",
+          "Equipo de elevación/escalera/andamio inspeccionado",
+          "Casco con barbiquejo verificado",
+          "Plan de rescate de suspendidos en menos de 15 min disponible"
+        ]
+      },
+      calientes: {
+        title: "Checklist de seguridad — Trabajos calientes",
+        cert: "Trabajos calientes (soldadura/corte)",
+        items: [
+          "Materiales inflamables removidos a 10 m del área",
+          "Extintor apropiado disponible a menos de 3 m",
+          "Equipo desenergizado (LOTO) si aplica",
+          "Área delimitada y vigilante de fuego asignado",
+          "Aberturas en paredes o suelo cubiertas",
+          "Cables y conexiones eléctricas en buen estado",
+          "Cilindros de gas sujetos, verticales e identificados",
+          "EPP específico verificado (careta, guantes de carnaza, mandil)"
+        ]
+      },
+      nr: {
+        title: "Identificación de peligros — Actividad no rutinaria",
+        cert: "Inducción de seguridad general",
+        items: [
+          "Peligros biológicos evaluados",
+          "Peligros eléctricos evaluados",
+          "Peligros ergonómicos evaluados (manejo de cargas, posturas)",
+          "Peligros físicos evaluados (ruido, iluminación, piso)",
+          "Peligros mecánicos evaluados (partes en movimiento, bordes filosos)",
+          "Peligros químicos evaluados (sustancias, HDS disponible)",
+          "EPP requerido identificado y disponible",
+          "Plan de acción documentado con responsables y fechas"
+        ]
+      }
+    };
+
+    let currentRisk = 'confinados';
+    let currentStep = 1;
+
+    // ============ Risk selector ============
+    const riskOptions = document.querySelectorAll('.risk-option');
+    riskOptions.forEach(btn => {
+      btn.addEventListener('click', () => {
+        riskOptions.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        currentRisk = btn.dataset.risk;
+        document.getElementById('checklistTitle').textContent = '3. ' + checklistData[currentRisk].title;
+        document.querySelectorAll('[id^="cert-req-"]').forEach(td => td.textContent = checklistData[currentRisk].cert);
+        document.getElementById('atmosphereBlock').style.display = currentRisk === 'confinados' ? 'block' : 'none';
+        document.getElementById('fallCalcBlock').style.display = currentRisk === 'alturas' ? 'block' : 'none';
+        renderChecklist(currentRisk);
+      });
+    });
+
+    // ============ Render checklist ============
+    function renderChecklist(risk) {
+      const container = document.getElementById('checklistItems');
+      container.innerHTML = '';
+      checklistData[risk].items.forEach((text, i) => {
+        const item = document.createElement('div');
+        item.className = 'checklist-item';
+        item.innerHTML = `
+          <div class="checklist-item-text"><span class="checklist-item-num">${String(i + 1).padStart(2, '0')}</span>${text}</div>
+          <div class="checklist-options">
+            <button class="opt-btn ok" type="button">Cumple</button>
+            <button class="opt-btn fail" type="button">No cumple</button>
+            <button class="opt-btn na" type="button">N/A</button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    document.getElementById('checklistItems').addEventListener('click', (e) => {
+      const btn = e.target.closest('.opt-btn');
+      if (!btn) return;
+      const siblings = btn.parentElement.querySelectorAll('.opt-btn');
+      siblings.forEach(s => s.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+
+    renderChecklist(currentRisk);
+
+    // ============ Atmosphere validation ============
+    const atmInputs = ['atmO2', 'atmCO', 'atmLEL', 'atmH2S'];
+    const atmRanges = { atmO2: [19.5, 23.5], atmCO: [0, 20], atmLEL: [0, 10], atmH2S: [0, 5] };
+
+    function checkAtmosphere() {
+      let outOfRange = false;
+      atmInputs.forEach(id => {
+        const el = document.getElementById(id);
+        const val = parseFloat(el.value);
+        const [min, max] = atmRanges[id];
+        if (el.value !== '' && (val < min || val > max)) {
+          el.classList.add('atm-input-warn');
+          outOfRange = true;
+        } else {
+          el.classList.remove('atm-input-warn');
+        }
+      });
+      document.getElementById('atmWarning').classList.toggle('hidden', !outOfRange);
+      return !outOfRange;
+    }
+
+    atmInputs.forEach(id => document.getElementById(id).addEventListener('input', checkAtmosphere));
+
+    // ============ Fall distance calculation ============
+    function calcFall() {
+      const dt = parseFloat(document.getElementById('calcDT').value) || 0;
+      const ll = parseFloat(document.getElementById('calcLL').value) || 0;
+      const dd = parseFloat(document.getElementById('calcDD').value) || 0;
+      const hh = parseFloat(document.getElementById('calcHH').value) || 0;
+      const fs = parseFloat(document.getElementById('calcFS').value) || 0;
+      const dc = ll + dd + hh + fs;
+      const resultEl = document.getElementById('calcResult');
+      const safe = dc < dt;
+      resultEl.textContent = `DC = ${dc.toFixed(2)} m — ${safe ? 'menor' : 'NO es menor'} a DT (${dt} m) — ${safe ? 'el trabajo puede realizarse con estas condiciones' : 'condición insegura, revisar punto de anclaje o equipo'}`;
+      resultEl.classList.toggle('safe', safe);
+      resultEl.classList.toggle('danger', !safe);
+      return safe;
+    }
+
+    ['calcDT','calcLL','calcDD','calcHH','calcFS'].forEach(id => document.getElementById(id).addEventListener('input', calcFall));
+    calcFall();
+
+    // ============ Add worker row ============
+    let workerCount = 2;
+    document.getElementById('addWorkerBtn').addEventListener('click', () => {
+      const tbody = document.getElementById('workersBody');
+      const row = document.createElement('tr');
+      const isExpired = Math.random() < 0.3;
+      row.innerHTML = `
+        <td><input type="text" placeholder="Nombre del trabajador"></td>
+        <td id="cert-req-${workerCount}">${checklistData[currentRisk].cert}</td>
+        <td><span class="dc3-status ${isExpired ? 'fail' : 'ok'}"><span class="dot"></span>${isExpired ? 'Vencido — bloqueado' : 'Vigente · vence 11/2027'}</span></td>
+      `;
+      tbody.appendChild(row);
+      workerCount++;
+    });
+
+    // ============ Signature pads ============
+    document.querySelectorAll('.sig-pad').forEach(pad => {
+      pad.addEventListener('click', () => {
+        if (pad.classList.contains('signed')) return;
+        pad.classList.add('signed');
+        pad.textContent = '✓ Firmado electrónicamente';
+        const now = new Date();
+        const meta = pad.nextElementSibling;
+        meta.textContent = `${now.toLocaleDateString('es-MX')} ${now.toLocaleTimeString('es-MX')} · IP simulada 10.20.x.x`;
+      });
+    });
+
+    // ============ Step navigation ============
+    const stepPanels = { 1: 'panelStep1', 2: 'panelStep2', 3: 'panelStep3', 4: 'panelStep4' };
+    const stepIndicators = { 1: 'step1Indicator', 2: 'step2Indicator', 3: 'step3Indicator', 4: 'step4Indicator' };
+
+    function showStep(step) {
+      Object.values(stepPanels).forEach(id => document.getElementById(id).style.display = 'none');
+      document.getElementById(stepPanels[step]).style.display = 'block';
+
+      Object.entries(stepIndicators).forEach(([num, id]) => {
+        const el = document.getElementById(id);
+        el.classList.remove('active', 'done');
+        if (parseInt(num) < step) el.classList.add('done');
+        if (parseInt(num) === step) el.classList.add('active');
+      });
+
+      document.getElementById('prevBtn').style.visibility = step === 1 ? 'hidden' : 'visible';
+      document.getElementById('nextBtn').textContent = step === 4 ? 'Activar permiso →' : 'Continuar →';
+      document.getElementById('resultPanel').classList.remove('show');
+      document.querySelector('.form-footer').style.display = 'flex';
+    }
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      if (currentStep === 3) {
+        if (currentRisk === 'confinados' && !checkAtmosphere()) return;
+        if (currentRisk === 'alturas' && !calcFall()) return;
+      }
+      if (currentStep === 4) {
+        const allSigned = document.querySelectorAll('.sig-pad.signed').length === 4;
+        if (!allSigned) {
+          alert('Se requieren las 4 firmas antes de activar el permiso.');
+          return;
+        }
+        // Show result panel
+        document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+        document.querySelector('.form-footer').style.display = 'none';
+        document.getElementById('resultPanel').classList.add('show');
+        return;
+      }
+      currentStep++;
+      showStep(currentStep);
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    });
+
+    showStep(1);
+
+    // ============ Simple QR-like pattern (visual only, not a real scannable QR) ============
+    function drawFakeQR() {
+      const svg = document.getElementById('qrSvg');
+      const size = 10;
+      const cell = 100 / size;
+      let html = `<rect width="100" height="100" fill="#ffffff"/>`;
+      const seed = "a3f97c214e8b9d10";
+      let seedIdx = 0;
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const isCorner = (x < 3 && y < 3) || (x > size - 4 && y < 3) || (x < 3 && y > size - 4);
+          const charCode = seed.charCodeAt(seedIdx % seed.length);
+          seedIdx++;
+          const fill = isCorner || (charCode + x * 7 + y * 13) % 3 === 0;
+          if (fill) {
+            html += `<rect x="${x * cell}" y="${y * cell}" width="${cell}" height="${cell}" fill="#00264d"/>`;
+          }
+        }
+      }
+      svg.innerHTML = html;
+    }
+    drawFakeQR();
+  </script>
+
+</body>
+</html>
