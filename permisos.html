@@ -342,6 +342,24 @@
   }
   .add-worker-btn:hover { text-decoration: underline; }
 
+  .company-status-banner {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .company-status-banner svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .company-status-banner.ok { background: rgba(47,143,91,0.08); color: var(--safe-green); }
+  .company-status-banner.warn { background: rgba(184,134,11,0.08); color: var(--amber); }
+  .company-status-banner.fail { background: rgba(192,57,43,0.08); color: var(--red); }
+
+  .remove-worker-btn {
+    background: none; border: none; color: var(--gray-400); cursor: pointer; font-size: 1rem; line-height: 1;
+  }
+  .remove-worker-btn:hover { color: var(--red); }
+
   /* ===== Checklist items (reused pattern) ===== */
   .checklist-items { display: flex; flex-direction: column; gap: 1px; background: var(--gray-200); border: 1px solid var(--gray-200); }
 
@@ -560,7 +578,7 @@
 
   <div class="demo-banner">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
-    <span><strong>Maqueta de demostración.</strong> Este formulario simula el flujo de un Permiso de Trabajo Seguro. </span>
+    <span><strong>Maqueta de demostración.</strong> Este formulario simula el flujo de un Permiso de Trabajo Seguro. No guarda datos reales, no genera firmas con validez legal y no debe usarse en operación — requiere un backend con autenticación antes de cualquier uso productivo.</span>
   </div>
 
   <div class="utility-bar">
@@ -583,8 +601,8 @@
       <a href="index.html">Inicio</a>
       <a href="inspecciones.html">Inspecciones</a>
       <a href="permisos.html" class="active">Permisos PTS</a>
+      <a href="personal.html">Personal y Proveedores</a>
       <a href="#">Entrenamientos</a>
-      <a href="#">Documentación</a>
     </div>
   </nav>
 
@@ -657,10 +675,11 @@
         <div class="panel-head">
           <div>
             <h3>2. Datos generales del trabajo</h3>
-            <p>Información del contratista, planta, área y trabajadores autorizados.</p>
+            <p>Información del responsable, planta, área y trabajadores autorizados.</p>
           </div>
         </div>
         <div class="panel-body">
+
           <div class="form-grid cols-4" style="margin-bottom: 22px;">
             <div class="field-group">
               <label>Folio</label>
@@ -669,20 +688,37 @@
             <div class="field-group">
               <label>Planta / Área</label>
               <select>
-                <option>Juno · Lineas</option>
-                <option>Juno · Gabinetes</option>
-                <option>Juno · Puertas</option>
-                <option>Frontier · Lineas</option>
-                <option>Frontier · Gabinetes</option>
+                <option>Monterrey · Línea 3</option>
+                <option>Monterrey · Patio norte</option>
+                <option>Querétaro · Tanque 2</option>
+                <option>Apodaca · Almacén</option>
               </select>
-            </div>
-            <div class="field-group">
-              <label>Empresa contratista</label>
-              <input type="text" placeholder="Nombre de la empresa">
             </div>
             <div class="field-group">
               <label>Equipo / Máquina</label>
               <input type="text" placeholder="Identificador del equipo">
+            </div>
+            <div class="field-group">
+              <label>Trabajo realizado por</label>
+              <select id="executorType">
+                <option value="contratista">Contratista</option>
+                <option value="whirlpool">Personal Whirlpool</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid cols-2" style="margin-bottom: 22px;" id="companySelectorRow">
+            <div class="field-group">
+              <label>Empresa contratista</label>
+              <select id="companySelect">
+                <option value="aan" data-status="ok">Andamios y Alturas del Norte S.A. de C.V.</option>
+                <option value="sic" data-status="warn">Servicios Industriales Caliente S. de R.L.</option>
+                <option value="mib" data-status="fail">Mantenimiento Industrial del Bravo S.A.</option>
+                <option value="gec" data-status="ok">Grupo EHS Consultores Querétaro</option>
+              </select>
+            </div>
+            <div class="field-group" style="display: flex; flex-direction: column; justify-content: flex-end;">
+              <div id="companyStatusBanner"></div>
             </div>
           </div>
 
@@ -711,29 +747,15 @@
           </div>
 
           <div class="field-group full">
-            <label>Trabajadores autorizados — validación de competencias (DC-3)</label>
+            <label id="workersLabel">Trabajadores autorizados — validación de competencias (DC-3)</label>
             <table class="workers-table">
               <thead>
-                <tr><th>Nombre</th><th>Certificación requerida</th><th style="width:160px;">Estatus DC-3</th></tr>
+                <tr><th>Nombre</th><th>Certificación requerida</th><th style="width:180px;">Estatus</th><th style="width:60px;"></th></tr>
               </thead>
-              <tbody id="workersBody">
-                <tr>
-                  <td><input type="text" value="J. Martínez Reyes"></td>
-                  <td id="cert-req-0">Espacios confinados</td>
-                  <td><span class="dc3-status ok"><span class="dot"></span>Vigente · vence 03/2027</span></td>
-                </tr>
-                <tr>
-                  <td><input type="text" value="A. Salinas Ortiz"></td>
-                  <td id="cert-req-1">Espacios confinados</td>
-                  <td><span class="dc3-status fail"><span class="dot"></span>Vencido — bloqueado</span></td>
-                </tr>
-              </tbody>
+              <tbody id="workersBody"></tbody>
             </table>
             <button class="add-worker-btn" id="addWorkerBtn">+ Agregar trabajador</button>
-            <div class="validation-note" id="dc3Warning" style="margin-top: 12px;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
-              A. Salinas Ortiz tiene su constancia DC-3 vencida para este riesgo — el sistema bloquea su asignación hasta renovar la certificación.
-            </div>
+            <div class="validation-note" id="dc3Warning" style="margin-top: 12px;"></div>
           </div>
         </div>
       </div>
@@ -933,6 +955,139 @@
 
     let currentRisk = 'confinados';
     let currentStep = 1;
+    let currentExecutor = 'contratista';
+    let currentCompany = 'aan';
+
+    // ============ Mock catalog: companies + their workers ============
+    const companyCatalog = {
+      aan: {
+        name: "Andamios y Alturas del Norte S.A. de C.V.",
+        status: "ok",
+        statusText: "Documentación vigente — REPSE, SUA y seguro al día.",
+        workers: [
+          { name: "R. Cantú Villarreal", cert: "Espacios confinados", status: "ok", detail: "Vigente · vence 03/2027" },
+          { name: "E. Domínguez Paz", cert: "Trabajo en alturas", status: "ok", detail: "Vigente · vence 09/2026" },
+          { name: "F. Olvera Ramos", cert: "Trabajo en alturas", status: "warn", detail: "Vence en 18 días" }
+        ]
+      },
+      sic: {
+        name: "Servicios Industriales Caliente S. de R.L.",
+        status: "warn",
+        statusText: "Alta patronal SUA vence en 12 días — la empresa sigue habilitada, pero requiere renovación próxima.",
+        workers: [
+          { name: "P. Garza Elizondo", cert: "Trabajos calientes", status: "ok", detail: "Vigente · vence 05/2027" },
+          { name: "S. Luna Briones", cert: "Trabajos calientes", status: "ok", detail: "Vigente · vence 01/2027" }
+        ]
+      },
+      mib: {
+        name: "Mantenimiento Industrial del Bravo S.A.",
+        status: "fail",
+        statusText: "Empresa bloqueada — REPSE vencido y póliza de seguro no registrada. No puede asignarse a ningún permiso.",
+        workers: [
+          { name: "D. Pérez Cavazos", cert: "Espacios confinados", status: "fail", detail: "Empresa bloqueada" }
+        ]
+      },
+      gec: {
+        name: "Grupo EHS Consultores Querétaro",
+        status: "ok",
+        statusText: "Documentación vigente — REPSE, SUA y seguro al día.",
+        workers: [
+          { name: "N. Cordero Lima", cert: "Identificación de peligros", status: "ok", detail: "Vigente · vence 02/2027" }
+        ]
+      }
+    };
+
+    const employeeCatalog = [
+      { name: "R. Treviño Saldaña", cert: "Espacios confinados", status: "ok", detail: "Vigente · vence 08/2026" },
+      { name: "L. Garza Montemayor", cert: "Trabajo en alturas", status: "ok", detail: "Vigente · vence 11/2026" },
+      { name: "M. Ibarra Cepeda", cert: "Espacios confinados", status: "warn", detail: "Vence en 21 días" },
+      { name: "A. Ríos Fuentes", cert: "Trabajos calientes", status: "fail", detail: "Vencido — bloqueado" },
+      { name: "V. Solís Hernández", cert: "Trabajo en alturas", status: "ok", detail: "Vigente · vence 09/2026" }
+    ];
+
+    // ============ Executor type (Whirlpool / Contratista) ============
+    const executorSelect = document.getElementById('executorType');
+    const companySelectorRow = document.getElementById('companySelectorRow');
+    const companySelect = document.getElementById('companySelect');
+    const workersLabel = document.getElementById('workersLabel');
+
+    executorSelect.addEventListener('change', () => {
+      currentExecutor = executorSelect.value;
+      companySelectorRow.style.display = currentExecutor === 'contratista' ? 'grid' : 'none';
+      workersLabel.textContent = currentExecutor === 'contratista'
+        ? 'Trabajadores autorizados — validación de competencias (DC-3)'
+        : 'Empleados Whirlpool autorizados — constancia de capacitación interna';
+      renderWorkersForCurrentSelection();
+    });
+
+    companySelect.addEventListener('change', () => {
+      currentCompany = companySelect.value;
+      renderWorkersForCurrentSelection();
+    });
+
+    function renderCompanyBanner() {
+      const banner = document.getElementById('companyStatusBanner');
+      if (currentExecutor !== 'contratista') { banner.innerHTML = ''; return; }
+      const company = companyCatalog[currentCompany];
+      const icon = company.status === 'fail'
+        ? '<path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/>'
+        : company.status === 'warn'
+        ? '<path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/>'
+        : '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>';
+      banner.innerHTML = `<div class="company-status-banner ${company.status}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${icon}</svg>${company.statusText}</div>`;
+    }
+
+    function renderWorkersForCurrentSelection() {
+      renderCompanyBanner();
+      const source = currentExecutor === 'contratista' ? companyCatalog[currentCompany].workers : employeeCatalog;
+      renderWorkersTable(source);
+    }
+
+    function renderWorkersTable(workers) {
+      const tbody = document.getElementById('workersBody');
+      tbody.innerHTML = '';
+      workers.forEach(w => addWorkerRow(w.name, w.cert, w.status, w.detail));
+      updateDc3Warning();
+    }
+
+    function addWorkerRow(name, cert, status, detail) {
+      const tbody = document.getElementById('workersBody');
+      const row = document.createElement('tr');
+      row.dataset.status = status;
+      row.innerHTML = `
+        <td><input type="text" value="${name}"></td>
+        <td class="worker-cert">${cert}</td>
+        <td><span class="dc3-status ${status === 'fail' ? 'fail' : 'ok'}"><span class="dot"></span>${detail}</span></td>
+        <td><button class="remove-worker-btn" type="button" title="Quitar">✕</button></td>
+      `;
+      row.querySelector('.remove-worker-btn').addEventListener('click', () => { row.remove(); updateDc3Warning(); });
+      tbody.appendChild(row);
+    }
+
+    function updateDc3Warning() {
+      const warning = document.getElementById('dc3Warning');
+      const blockedRows = document.querySelectorAll('#workersBody tr[data-status="fail"]');
+      if (blockedRows.length > 0) {
+        const names = Array.from(blockedRows).map(r => r.querySelector('input').value).join(', ');
+        warning.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg> ${names} ${blockedRows.length > 1 ? 'tienen' : 'tiene'} certificación vencida o pertenece a una empresa bloqueada — el sistema impide avanzar a la firma hasta resolverlo.`;
+        warning.style.display = 'flex';
+      } else {
+        warning.style.display = 'none';
+      }
+    }
+
+    function hasBlockedWorkers() {
+      return document.querySelectorAll('#workersBody tr[data-status="fail"]').length > 0;
+    }
+
+    document.getElementById('addWorkerBtn').addEventListener('click', () => {
+      const cert = currentExecutor === 'contratista' ? checklistData[currentRisk].cert : checklistData[currentRisk].cert;
+      addWorkerRow('Nuevo trabajador', cert, 'ok', 'Pendiente de verificar');
+      updateDc3Warning();
+    });
+
+    // Initial render
+    renderWorkersForCurrentSelection();
 
     // ============ Risk selector ============
     const riskOptions = document.querySelectorAll('.risk-option');
@@ -942,7 +1097,7 @@
         btn.classList.add('selected');
         currentRisk = btn.dataset.risk;
         document.getElementById('checklistTitle').textContent = '3. ' + checklistData[currentRisk].title;
-        document.querySelectorAll('[id^="cert-req-"]').forEach(td => td.textContent = checklistData[currentRisk].cert);
+        document.querySelectorAll('.worker-cert').forEach(td => td.textContent = checklistData[currentRisk].cert);
         document.getElementById('atmosphereBlock').style.display = currentRisk === 'confinados' ? 'block' : 'none';
         document.getElementById('fallCalcBlock').style.display = currentRisk === 'alturas' ? 'block' : 'none';
         renderChecklist(currentRisk);
@@ -1020,21 +1175,6 @@
     ['calcDT','calcLL','calcDD','calcHH','calcFS'].forEach(id => document.getElementById(id).addEventListener('input', calcFall));
     calcFall();
 
-    // ============ Add worker row ============
-    let workerCount = 2;
-    document.getElementById('addWorkerBtn').addEventListener('click', () => {
-      const tbody = document.getElementById('workersBody');
-      const row = document.createElement('tr');
-      const isExpired = Math.random() < 0.3;
-      row.innerHTML = `
-        <td><input type="text" placeholder="Nombre del trabajador"></td>
-        <td id="cert-req-${workerCount}">${checklistData[currentRisk].cert}</td>
-        <td><span class="dc3-status ${isExpired ? 'fail' : 'ok'}"><span class="dot"></span>${isExpired ? 'Vencido — bloqueado' : 'Vigente · vence 11/2027'}</span></td>
-      `;
-      tbody.appendChild(row);
-      workerCount++;
-    });
-
     // ============ Signature pads ============
     document.querySelectorAll('.sig-pad').forEach(pad => {
       pad.addEventListener('click', () => {
@@ -1069,6 +1209,12 @@
     }
 
     document.getElementById('nextBtn').addEventListener('click', () => {
+      if (currentStep === 2) {
+        if (hasBlockedWorkers()) {
+          alert('No se puede continuar: hay trabajadores con certificación vencida o pertenecientes a una empresa bloqueada. Resuelve esto antes de avanzar.');
+          return;
+        }
+      }
       if (currentStep === 3) {
         if (currentRisk === 'confinados' && !checkAtmosphere()) return;
         if (currentRisk === 'alturas' && !calcFall()) return;
