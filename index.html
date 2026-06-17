@@ -1,203 +1,649 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal EHS - WRA</title>
-    <style>
-        :root {
-            --whr-navy: #003b71; /* Azul marino principal corporativo */
-            --whr-blue: #009cde; /* Azul claro para íconos/botones */
-            --whr-light-bg: #f4f4f4; /* Fondo gris claro de las tarjetas */
-            --whr-text-dark: #333333;
-            --whr-text-gray: #666666;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal EHS — WRA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&family=Roboto+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-deep: #00264d;
+    --navy: #003b71;
+    --blue: #009cde;
+    --blue-dark: #0078ad;
+    --ink: #1a1f29;
+    --gray-700: #4a5160;
+    --gray-400: #8891a0;
+    --gray-200: #e2e6eb;
+    --gray-100: #f1f3f6;
+    --paper: #fbfbfc;
+    --safe-green: #2f8f5b;
+    --line: rgba(255,255,255,0.14);
 
-        body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            margin: 0; 
-            background-color: #ffffff; 
-            color: var(--whr-text-dark); 
-        }
-        
-        /* Barra de navegación superior */
-        .top-nav { 
-            background-color: var(--whr-navy); 
-            color: white; 
-            padding: 15px 30px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            font-size: 0.9rem;
-        }
+    --font-display: 'Archivo', sans-serif;
+    --font-body: 'Source Sans 3', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+  }
 
-        .top-nav .logo { 
-            font-weight: bold; 
-            font-size: 1.2rem; 
-            letter-spacing: 1px;
-        }
-        
-        /* Sección principal (Hero) */
-        .hero { 
-            text-align: center; 
-            padding: 60px 20px 40px; 
-            background-color: #ffffff; 
-        }
-        
-        .hero h1 { 
-            color: var(--whr-navy); 
-            font-size: 2.5rem; 
-            font-weight: 300; 
-            margin-bottom: 20px;
-            letter-spacing: 0.5px;
-        }
+  * { box-sizing: border-box; }
 
-        /* Contenedor central */
-        .container { 
-            max-width: 1100px; 
-            margin: 0 auto; 
-            padding: 0 20px 60px; 
-        }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
 
-        /* Grid de íconos cuadrados (Idéntico a la imagen) */
-        .quick-links { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-            gap: 15px; 
-            justify-content: center;
-        }
+  a { color: inherit; }
 
-        /* Estilo de la tarjeta cuadrada */
-        .link-card { 
-            background-color: var(--whr-light-bg); 
-            padding: 30px 15px; 
-            text-align: center; 
-            text-decoration: none; 
-            color: var(--whr-text-gray); 
-            transition: background-color 0.2s, transform 0.2s; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-        }
+  /* ===== Utility bar ===== */
+  .utility-bar {
+    background: var(--navy-deep);
+    color: #c9d6e6;
+    font-size: 0.78rem;
+    padding: 7px 40px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 24px;
+    letter-spacing: 0.2px;
+  }
+  .utility-bar a {
+    text-decoration: none;
+    color: #c9d6e6;
+    opacity: 0.9;
+    transition: opacity 0.15s;
+  }
+  .utility-bar a:hover { opacity: 1; color: #ffffff; }
+  .utility-bar .divider { opacity: 0.3; }
 
-        .link-card:hover { 
-            background-color: #e8e8e8; 
-        }
+  /* ===== Main nav ===== */
+  .main-nav {
+    background: var(--navy);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    border-bottom: 3px solid var(--blue);
+  }
 
-        /* Círculo azul para el ícono */
-        .icon-circle { 
-            background-color: var(--whr-blue); 
-            color: white; 
-            width: 70px; 
-            height: 70px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 32px; 
-            margin-bottom: 15px; 
-        }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
 
-        .link-title { 
-            font-size: 0.95rem; 
-            font-weight: 400; 
-            line-height: 1.3;
-            color: var(--whr-text-gray);
-        }
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+    border: 2px solid var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 800;
+    color: #ffffff;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+  }
 
-        /* Barra de sección inferior */
-        .section-header { 
-            background-color: var(--whr-navy); 
-            color: white; 
-            padding: 12px 20px; 
-            margin-top: 50px; 
-            font-weight: 500; 
-        }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
 
-        .section-content { 
-            border: 1px solid #e0e0e0; 
-            border-top: none;
-            padding: 40px; 
-            text-align: center;
-            background-color: white;
-        }
+  .brand-text .org {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+  }
 
-        .btn-portal {
-            display: inline-block; 
-            background-color: var(--whr-blue); 
-            color: white; 
-            text-decoration: none; 
-            padding: 10px 25px; 
-            border-radius: 4px; 
-            margin-top: 15px;
-            font-size: 0.9rem;
-            transition: background-color 0.2s;
-        }
+  .brand-text .division {
+    font-size: 0.7rem;
+    color: #9fc4e6;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
 
-        .btn-portal:hover {
-            background-color: #0088c2;
-        }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    align-items: center;
+  }
 
-    </style>
+  .nav-links a {
+    text-decoration: none;
+    color: #dbe7f3;
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    position: relative;
+    padding: 8px 0;
+    transition: color 0.15s;
+  }
+
+  .nav-links a:hover { color: #ffffff; }
+
+  .nav-links a.active { color: #ffffff; }
+  .nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--blue);
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    background: linear-gradient(165deg, var(--navy-deep) 0%, var(--navy) 62%, #024a87 100%);
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 42%;
+    background:
+      repeating-linear-gradient(
+        135deg,
+        rgba(255,255,255,0.025) 0px,
+        rgba(255,255,255,0.025) 2px,
+        transparent 2px,
+        transparent 14px
+      );
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 76px 40px 64px;
+    display: grid;
+    grid-template-columns: 1.25fr 0.9fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7fc4ec;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--blue);
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: 2.9rem;
+    font-weight: 700;
+    line-height: 1.12;
+    margin: 0 0 22px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero p.lead {
+    font-size: 1.05rem;
+    color: #c4d6e8;
+    line-height: 1.65;
+    max-width: 480px;
+    margin: 0 0 34px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+  }
+
+  .btn {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 13px 28px;
+    border-radius: 2px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    letter-spacing: 0.2px;
+  }
+
+  .btn-primary {
+    background: var(--blue);
+    color: #ffffff;
+    border: 1px solid var(--blue);
+  }
+  .btn-primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
+
+  .btn-ghost {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.35);
+  }
+  .btn-ghost:hover { border-color: #ffffff; background: rgba(255,255,255,0.06); }
+
+  /* ===== Indicator card (signature element) ===== */
+  .indicator-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(2px);
+    padding: 32px 30px 28px;
+    position: relative;
+  }
+
+  .indicator-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--safe-green);
+  }
+
+  .indicator-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: #9fb6cc;
+    margin-bottom: 4px;
+  }
+
+  .indicator-value {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 4.4rem;
+    line-height: 1;
+    color: #ffffff;
+    margin: 10px 0 6px;
+    letter-spacing: -1px;
+  }
+
+  .indicator-sub {
+    font-size: 0.85rem;
+    color: #aebfd1;
+  }
+
+  .indicator-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    font-size: 0.78rem;
+    color: #d7e6f2;
+    width: 100%;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--safe-green);
+    box-shadow: 0 0 0 3px rgba(47,143,91,0.25);
+  }
+
+  .indicator-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 18px;
+  }
+
+  .indicator-mini {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 12px;
+  }
+
+  .indicator-mini .mini-value {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .indicator-mini .mini-label {
+    font-size: 0.72rem;
+    color: #9fb6cc;
+    letter-spacing: 0.3px;
+    margin-top: 2px;
+  }
+
+  /* ===== Quick access section ===== */
+  .section {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 84px 40px 30px;
+  }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 38px;
+    border-bottom: 1px solid var(--gray-200);
+    padding-bottom: 22px;
+  }
+
+  .section-head h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0;
+    letter-spacing: -0.2px;
+  }
+
+  .section-head .section-tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+  }
+
+  .quick-links {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    background: var(--gray-200);
+    border: 1px solid var(--gray-200);
+  }
+
+  .link-card {
+    background: #ffffff;
+    padding: 34px 18px 28px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    transition: background 0.18s;
+    position: relative;
+  }
+
+  .link-card:hover { background: var(--gray-100); }
+
+  .link-card:hover .link-arrow { opacity: 1; transform: translateX(0); }
+
+  .link-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--navy);
+  }
+
+  .link-icon svg { width: 26px; height: 26px; }
+
+  .link-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .link-meta {
+    font-size: 0.74rem;
+    color: var(--gray-400);
+    margin-top: -10px;
+  }
+
+  .link-arrow {
+    position: absolute;
+    bottom: 22px;
+    right: 18px;
+    color: var(--blue);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.18s, transform 0.18s;
+    font-size: 1rem;
+  }
+
+  /* ===== Announcements ===== */
+  .announce-section {
+    background: var(--navy);
+    margin-top: 90px;
+  }
+
+  .announce-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+  }
+
+  .announce-item {
+    padding: 0 32px;
+    border-left: 1px solid rgba(255,255,255,0.15);
+  }
+  .announce-item:first-child { border-left: none; padding-left: 0; }
+
+  .announce-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+
+  .announce-item h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 10px;
+    line-height: 1.35;
+  }
+
+  .announce-item p {
+    font-size: 0.85rem;
+    color: #b7cce0;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ===== Footer strip ===== */
+  .footer-strip {
+    background: var(--navy-deep);
+    padding: 18px 40px;
+    text-align: center;
+    font-size: 0.74rem;
+    color: #7e93ab;
+    letter-spacing: 0.3px;
+  }
+
+  @media (max-width: 980px) {
+    .hero-inner { grid-template-columns: 1fr; padding: 56px 24px; }
+    .quick-links { grid-template-columns: repeat(2, 1fr); }
+    .announce-inner { grid-template-columns: 1fr; gap: 30px; }
+    .announce-item { border-left: none; padding: 0; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 24px; }
+    .announce-item:first-child { border-top: none; padding-top: 0; }
+    .nav-links { display: none; }
+    .utility-bar { padding: 7px 24px; }
+    .main-nav { padding: 0 24px; }
+    .section { padding: 56px 24px 30px; }
+  }
+</style>
 </head>
 <body>
 
-    <!-- Barra superior -->
-    <div class="top-nav">
-        <div class="logo">WRA</div>
-        <div>Portal EHS</div>
+  <div class="utility-bar">
+    <a href="#">Directorio de plantas</a>
+    <span class="divider">|</span>
+    <a href="#">Soporte TI</a>
+    <span class="divider">|</span>
+    <a href="#">EN&nbsp;/&nbsp;ES</a>
+  </div>
+
+  <nav class="main-nav">
+    <div class="brand">
+      <div class="brand-mark">WRA</div>
+      <div class="brand-text">
+        <span class="org">Whirlpool</span>
+        <span class="division">Environment · Health · Safety</span>
+      </div>
     </div>
-
-    <!-- Encabezado -->
-    <div class="hero">
-        <h1>Portal de Medio Ambiente, Salud y Seguridad</h1>
+    <div class="nav-links">
+      <a href="#" class="active">Inicio</a>
+      <a href="#">Inspecciones</a>
+      <a href="#">WCM</a>
+      <a href="#">Entrenamientos</a>
+      <a href="#">Documentación</a>
     </div>
+  </nav>
 
-    <div class="container">
-        
-        <!-- Tarjetas tipo portal corporativo -->
-        <div class="quick-links">
-            <a href="#" class="link-card">
-                <div class="icon-circle">📋</div>
-                <div class="link-title">Inspecciones</div>
-            </a>
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">Portal Corporativo EHS</div>
+        <h1>Medio ambiente, salud<br>y seguridad en planta.</h1>
+        <p class="lead">Un solo punto de acceso a inspecciones, indicadores WCM, entrenamientos y documentación de seguridad para todas las operaciones de Whirlpool.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn btn-primary">Reportar un incidente</a>
+          <a href="#" class="btn btn-ghost">Ver tablero WCM</a>
+        </div>
+      </div>
 
-            <a href="#" class="link-card">
-                <div class="icon-circle">📊</div>
-                <div class="link-title">Tablero WCM</div>
-            </a>
+      <div class="indicator-card">
+        <div class="indicator-label">Planta Monterrey · Línea 3</div>
+        <div class="indicator-value">187</div>
+        <div class="indicator-sub">días consecutivos sin incidentes registrables</div>
 
-            <a href="#" class="link-card">
-                <div class="icon-circle">⚠️</div>
-                <div class="link-title">Reportes<br>Disciplinarios</div>
-            </a>
-
-            <a href="#" class="link-card">
-                <div class="icon-circle">🚀</div>
-                <div class="link-title">Proyectos<br>de EHS</div>
-            </a>
-
-            <a href="#" class="link-card">
-                <div class="icon-circle">📚</div>
-                <div class="link-title">Entrenamientos</div>
-            </a>
-
-            <a href="#" class="link-card">
-                <div class="icon-circle">📅</div>
-                <div class="link-title">Calendarios</div>
-            </a>
+        <div class="indicator-grid">
+          <div class="indicator-mini">
+            <div class="mini-value">12</div>
+            <div class="mini-label">Inspecciones esta semana</div>
+          </div>
+          <div class="indicator-mini">
+            <div class="mini-value">3</div>
+            <div class="mini-label">Hallazgos abiertos</div>
+          </div>
         </div>
 
-        <!-- Panel Inferior -->
-        <div class="section-header">
-            Avisos y Comunicados EHS
+        <div class="indicator-status">
+          <span class="status-dot"></span>
+          Estado actualizado hoy, 06:00 hrs
         </div>
-        <div class="section-content">
-            <p style="color: #666; margin-top: 0;">Centro de recursos e información general de seguridad en planta.</p>
-            <a href="#" class="btn-portal">Ir a Whirlpool 360</a>
-        </div>
-
+      </div>
     </div>
+  </header>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Accesos rápidos</h2>
+      <span class="section-tag">6 módulos</span>
+    </div>
+
+    <div class="quick-links">
+      <a href="#" class="link-card">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="link-title">Inspecciones</div>
+        <div class="link-meta">Checklists y hallazgos</div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="#" class="link-card">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18"/><path d="M18.4 9 12 15.4 8.6 12 3.4 17.2"/></svg>
+        </div>
+        <div class="link-title">Tablero WCM</div>
+        <div class="link-meta">Indicadores en vivo</div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="#" class="link-card">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
+        </div>
+        <div class="link-title">Reportes disciplinarios</div>
+        <div class="link-meta">Seguimiento de casos</div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="#" class="link-card">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </div>
+        <div class="link-title">Proyectos de EHS</div>
+        <div class="link-meta">Iniciativas activas</div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="#" class="link-card">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h20v14H2z"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+        </div>
+        <div class="link-title">Entrenamientos</div>
+        <div class="link-meta">Cursos y certificaciones</div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="#" class="link-card">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="1"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+        <div class="link-title">Calendarios</div>
+        <div class="link-meta">Auditorías programadas</div>
+        <span class="link-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="announce-section">
+    <div class="announce-inner">
+      <div class="announce-item">
+        <div class="announce-tag">Aviso</div>
+        <h3>Actualización del protocolo de bloqueo y etiquetado</h3>
+        <p>Nueva versión del procedimiento LOTO disponible en el módulo de documentación, vigente a partir del 1 de julio.</p>
+      </div>
+      <div class="announce-item">
+        <div class="announce-tag">Capacitación</div>
+        <h3>Certificación anual de espacios confinados</h3>
+        <p>Inscripciones abiertas para el ciclo de julio. Cupo limitado por planta.</p>
+      </div>
+      <div class="announce-item">
+        <div class="announce-tag">Recursos</div>
+        <h3>Centro de información Whirlpool 360</h3>
+        <p>Consulta políticas, formatos y material de referencia de seguridad en planta.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-strip">
+    © 2026 Whirlpool Corporation · Portal interno de Medio Ambiente, Salud y Seguridad
+  </div>
 
 </body>
 </html>
