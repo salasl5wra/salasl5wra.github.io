@@ -602,7 +602,7 @@
 
   <div class="demo-banner">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
-    <span><strong>Maqueta de demostración.</strong> Este formulario simula el flujo de un Permiso de Trabajo Seguro. No guarda datos reales, no genera firmas con validez legal y no debe usarse en operación — requiere un backend con autenticación antes de cualquier uso productivo.</span>
+    <span><strong>Maqueta de demostración.</strong> Prueba 1</span>
   </div>
 
   <div class="utility-bar">
@@ -688,7 +688,7 @@
           </button>
           <button class="risk-option" data-risk="nr">
             <div class="risk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-            <div class="risk-name">Identificación de peligros</div>
+            <div class="risk-name">JSRA NR</div>
             <div class="risk-nom">Actividad no rutinaria</div>
           </button>
         </div>
@@ -712,10 +712,10 @@
             <div class="field-group">
               <label>Planta / Área</label>
               <select>
-                <option>Monterrey · Línea 3</option>
-                <option>Monterrey · Patio norte</option>
-                <option>Querétaro · Tanque 2</option>
-                <option>Apodaca · Almacén</option>
+                <option>JUNO · Líneas de Ensamble</option>
+                <option>JUNO · Gabinetes</option>
+                <option>JUNO · Puertas</option>
+                <option>Almacenes</option>
               </select>
             </div>
             <div class="field-group">
@@ -735,10 +735,10 @@
             <div class="field-group">
               <label>Empresa contratista</label>
               <select id="companySelect">
-                <option value="aan" data-status="ok">Andamios y Alturas del Norte S.A. de C.V.</option>
-                <option value="sic" data-status="warn">Servicios Industriales Caliente S. de R.L.</option>
-                <option value="mib" data-status="fail">Mantenimiento Industrial del Bravo S.A.</option>
-                <option value="gec" data-status="ok">Grupo EHS Consultores Querétaro</option>
+                <option value="aan" data-status="ok">SEYS S.A. de C.V.</option>
+                <option value="sic" data-status="warn">Servicios Industriales S. de R.L.</option>
+                <option value="mib" data-status="fail">Mantenimiento Industrial S.A.</option>
+                <option value="gec" data-status="ok">Grupo EHS</option>
               </select>
             </div>
             <div class="field-group" style="display: flex; flex-direction: column; justify-content: flex-end;">
@@ -1008,13 +1008,13 @@
         status: "ok",
         statusText: "Documentación vigente — REPSE, SUA y seguro al día.",
         workers: [
-          { name: "R. Cantú Villarreal", cert: "Espacios confinados", status: "ok", detail: "Vigente · vence 03/2027" },
-          { name: "E. Domínguez Paz", cert: "Trabajo en alturas", status: "ok", detail: "Vigente · vence 09/2026" },
-          { name: "F. Olvera Ramos", cert: "Trabajo en alturas", status: "warn", detail: "Vence en 18 días" }
+          { name: "Cantú Villarreal", cert: "Espacios confinados", status: "ok", detail: "Vigente · vence 03/2027" },
+          { name: "Domínguez Paz", cert: "Trabajo en alturas", status: "ok", detail: "Vigente · vence 09/2026" },
+          { name: "Olvera Ramos", cert: "Trabajo en alturas", status: "warn", detail: "Vence en 18 días" }
         ]
       },
       sic: {
-        name: "Servicios Industriales Caliente S. de R.L.",
+        name: "Servicios Industriales S. de R.L.",
         status: "warn",
         statusText: "Alta patronal SUA vence en 12 días — la empresa sigue habilitada, pero requiere renovación próxima.",
         workers: [
@@ -1023,7 +1023,7 @@
         ]
       },
       mib: {
-        name: "Mantenimiento Industrial del Bravo S.A.",
+        name: "Mantenimiento Industrial S.A.",
         status: "fail",
         statusText: "Empresa bloqueada — REPSE vencido y póliza de seguro no registrada. No puede asignarse a ningún permiso.",
         workers: [
@@ -1041,7 +1041,7 @@
     };
 
     const employeeCatalog = [
-      { name: "R. Treviño Saldaña", cert: "Espacios confinados", status: "ok", detail: "Vigente · vence 08/2026" },
+      { name: "Treviño Saldaña", cert: "Espacios confinados", status: "ok", detail: "Vigente · vence 08/2026" },
       { name: "L. Garza Montemayor", cert: "Trabajo en alturas", status: "ok", detail: "Vigente · vence 11/2026" },
       { name: "M. Ibarra Cepeda", cert: "Espacios confinados", status: "warn", detail: "Vence en 21 días" },
       { name: "A. Ríos Fuentes", cert: "Trabajos calientes", status: "fail", detail: "Vencido — bloqueado" },
