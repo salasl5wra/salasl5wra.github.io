@@ -360,6 +360,30 @@
   }
   .remove-worker-btn:hover { color: var(--red); }
 
+  /* ===== Medical assessment table ===== */
+  .medical-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .medical-table th {
+    text-align: left; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.5px;
+    text-transform: uppercase; color: var(--gray-400); padding: 8px 10px; border-bottom: 1px solid var(--gray-200);
+  }
+  .medical-table td { padding: 8px 10px; border-bottom: 1px solid var(--gray-200); font-size: 0.85rem; vertical-align: middle; }
+  .medical-table input[type="number"], .medical-table input[type="text"] {
+    width: 100%; border: 1px solid var(--gray-200); padding: 6px 8px; font-size: 0.84rem; font-family: var(--font-mono);
+  }
+  .medical-table input.ta-input { width: 56px; display: inline-block; text-align: center; }
+  .medical-table .ta-sep { color: var(--gray-400); margin: 0 3px; }
+  .medical-table input.symptoms-input { font-family: var(--font-body); }
+  .medical-table input.field-warn { border-color: var(--red); background: #fdecea; }
+
+  .fit-toggle { display: flex; gap: 6px; }
+  .fit-btn {
+    font-family: var(--font-body); font-size: 0.74rem; font-weight: 600; padding: 6px 12px;
+    border: 1px solid var(--gray-200); background: #ffffff; color: var(--gray-700); cursor: pointer; border-radius: 2px;
+  }
+  .fit-btn.apto.selected { background: var(--safe-green); color: #ffffff; border-color: var(--safe-green); }
+  .fit-btn.no-apto.selected { background: var(--red); color: #ffffff; border-color: var(--red); }
+  .fit-btn:hover:not(.selected) { border-color: var(--blue); }
+
   /* ===== Checklist items (reused pattern) ===== */
   .checklist-items { display: flex; flex-direction: column; gap: 1px; background: var(--gray-200); border: 1px solid var(--gray-200); }
 
@@ -757,6 +781,25 @@
             <button class="add-worker-btn" id="addWorkerBtn">+ Agregar trabajador</button>
             <div class="validation-note" id="dc3Warning" style="margin-top: 12px;"></div>
           </div>
+
+          <div class="field-group full" id="medicalBlock" style="margin-top: 30px;">
+            <label>Valoración médica del día — Servicio Médico</label>
+            <p style="font-size: 0.82rem; color: var(--gray-700); margin: -2px 0 14px;">Requerida para trabajos en alturas y espacios confinados. Cada trabajador debe tener una valoración registrada antes de firmar el permiso.</p>
+            <table class="medical-table">
+              <thead>
+                <tr>
+                  <th>Trabajador</th>
+                  <th>TA (sistólica/diastólica)</th>
+                  <th>Peso (kg)</th>
+                  <th>Altura (m)</th>
+                  <th>Síntomas o condiciones reportadas</th>
+                  <th style="width:140px;">Aptitud</th>
+                </tr>
+              </thead>
+              <tbody id="medicalBody"></tbody>
+            </table>
+            <div class="validation-note" id="medicalWarning" style="margin-top: 12px;"></div>
+          </div>
         </div>
       </div>
 
@@ -1041,6 +1084,7 @@
       renderCompanyBanner();
       const source = currentExecutor === 'contratista' ? companyCatalog[currentCompany].workers : employeeCatalog;
       renderWorkersTable(source);
+      renderMedicalTable();
     }
 
     function renderWorkersTable(workers) {
@@ -1060,7 +1104,7 @@
         <td><span class="dc3-status ${status === 'fail' ? 'fail' : 'ok'}"><span class="dot"></span>${detail}</span></td>
         <td><button class="remove-worker-btn" type="button" title="Quitar">✕</button></td>
       `;
-      row.querySelector('.remove-worker-btn').addEventListener('click', () => { row.remove(); updateDc3Warning(); });
+      row.querySelector('.remove-worker-btn').addEventListener('click', () => { row.remove(); updateDc3Warning(); renderMedicalTable(); });
       tbody.appendChild(row);
     }
 
@@ -1080,10 +1124,124 @@
       return document.querySelectorAll('#workersBody tr[data-status="fail"]').length > 0;
     }
 
+    // ============ Medical assessment (Servicio Médico) ============
+    function medicalAppliesToRisk(risk) {
+      return risk === 'alturas' || risk === 'confinados';
+    }
+
+    function isBPOutOfRange(sys, dia) {
+      if (sys === '' || dia === '' || isNaN(sys) || isNaN(dia)) return false;
+      return (sys >= 140 || dia >= 90) || (sys <= 100 && dia <= 60);
+    }
+
+    function renderMedicalTable() {
+      const block = document.getElementById('medicalBlock');
+      block.style.display = medicalAppliesToRisk(currentRisk) ? 'block' : 'none';
+      if (!medicalAppliesToRisk(currentRisk)) { updateMedicalWarning(); return; }
+
+      const tbody = document.getElementById('medicalBody');
+      tbody.innerHTML = '';
+      const workerRows = document.querySelectorAll('#workersBody tr');
+      workerRows.forEach((wRow, i) => {
+        const name = wRow.querySelector('input').value;
+        const row = document.createElement('tr');
+        row.dataset.fit = 'pending';
+        row.innerHTML = `
+          <td>${name}</td>
+          <td>
+            <input type="number" class="ta-input med-sys" placeholder="120" min="0" max="260">
+            <span class="ta-sep">/</span>
+            <input type="number" class="ta-input med-dia" placeholder="80" min="0" max="200">
+          </td>
+          <td><input type="number" class="med-weight" placeholder="kg" min="0" max="250" style="width: 70px;"></td>
+          <td><input type="number" class="med-height" placeholder="m" min="1" max="2.3" step="0.01" style="width: 70px;"></td>
+          <td><input type="text" class="symptoms-input med-symptoms" placeholder="Ninguno reportado"></td>
+          <td>
+            <div class="fit-toggle">
+              <button class="fit-btn apto" type="button">Apto</button>
+              <button class="fit-btn no-apto" type="button">No apto</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(row);
+
+        const sysInput = row.querySelector('.med-sys');
+        const diaInput = row.querySelector('.med-dia');
+        const aptoBtn = row.querySelector('.fit-btn.apto');
+        const noAptoBtn = row.querySelector('.fit-btn.no-apto');
+
+        function checkBP() {
+          const sys = parseFloat(sysInput.value);
+          const dia = parseFloat(diaInput.value);
+          const outOfRange = isBPOutOfRange(sys, dia);
+          sysInput.classList.toggle('field-warn', outOfRange);
+          diaInput.classList.toggle('field-warn', outOfRange);
+          if (outOfRange) {
+            row.dataset.fit = 'no-apto';
+            aptoBtn.classList.remove('selected');
+            noAptoBtn.classList.add('selected');
+            noAptoBtn.disabled = false;
+            aptoBtn.disabled = true;
+          } else {
+            aptoBtn.disabled = false;
+            if (row.dataset.fit === 'no-apto' && noAptoBtn.classList.contains('selected') && !outOfRange) {
+              // allow Servicio Médico to keep manual no-apto, but unlock apto option
+            }
+          }
+          updateMedicalWarning();
+        }
+
+        aptoBtn.addEventListener('click', () => {
+          if (aptoBtn.disabled) return;
+          aptoBtn.classList.add('selected');
+          noAptoBtn.classList.remove('selected');
+          row.dataset.fit = 'apto';
+          updateMedicalWarning();
+        });
+        noAptoBtn.addEventListener('click', () => {
+          noAptoBtn.classList.add('selected');
+          aptoBtn.classList.remove('selected');
+          row.dataset.fit = 'no-apto';
+          updateMedicalWarning();
+        });
+
+        sysInput.addEventListener('input', checkBP);
+        diaInput.addEventListener('input', checkBP);
+      });
+      updateMedicalWarning();
+    }
+
+    function updateMedicalWarning() {
+      const warning = document.getElementById('medicalWarning');
+      if (!medicalAppliesToRisk(currentRisk)) { warning.style.display = 'none'; return; }
+
+      const rows = document.querySelectorAll('#medicalBody tr');
+      const noAptoRows = Array.from(rows).filter(r => r.dataset.fit === 'no-apto');
+      const pendingRows = Array.from(rows).filter(r => r.dataset.fit === 'pending');
+
+      if (noAptoRows.length > 0) {
+        warning.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg> ${noAptoRows.length} trabajador${noAptoRows.length > 1 ? 'es' : ''} marcado${noAptoRows.length > 1 ? 's' : ''} como No apto por Servicio Médico — no puede${noAptoRows.length > 1 ? 'n' : ''} continuar a la firma para este riesgo.`;
+        warning.style.display = 'flex';
+      } else if (pendingRows.length > 0 && rows.length > 0) {
+        warning.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0Z"/></svg> Faltan ${pendingRows.length} valoración(es) médica(s) pendiente(s) de Apto/No apto.`;
+        warning.style.display = 'flex';
+      } else {
+        warning.style.display = 'none';
+      }
+    }
+
+    function hasMedicalBlock() {
+      if (!medicalAppliesToRisk(currentRisk)) return false;
+      const rows = document.querySelectorAll('#medicalBody tr');
+      if (rows.length === 0) return false;
+      return Array.from(rows).some(r => r.dataset.fit === 'no-apto' || r.dataset.fit === 'pending');
+    }
+
     document.getElementById('addWorkerBtn').addEventListener('click', () => {
-      const cert = currentExecutor === 'contratista' ? checklistData[currentRisk].cert : checklistData[currentRisk].cert;
+      const cert = checklistData[currentRisk].cert;
       addWorkerRow('Nuevo trabajador', cert, 'ok', 'Pendiente de verificar');
       updateDc3Warning();
+      renderMedicalTable();
     });
 
     // Initial render
@@ -1101,6 +1259,7 @@
         document.getElementById('atmosphereBlock').style.display = currentRisk === 'confinados' ? 'block' : 'none';
         document.getElementById('fallCalcBlock').style.display = currentRisk === 'alturas' ? 'block' : 'none';
         renderChecklist(currentRisk);
+        renderMedicalTable();
       });
     });
 
@@ -1212,6 +1371,10 @@
       if (currentStep === 2) {
         if (hasBlockedWorkers()) {
           alert('No se puede continuar: hay trabajadores con certificación vencida o pertenecientes a una empresa bloqueada. Resuelve esto antes de avanzar.');
+          return;
+        }
+        if (hasMedicalBlock()) {
+          alert('No se puede continuar: hay valoraciones médicas pendientes o trabajadores marcados como "No apto" para este riesgo.');
           return;
         }
       }
